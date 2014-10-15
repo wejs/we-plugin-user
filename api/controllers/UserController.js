@@ -232,60 +232,6 @@ module.exports = {
     });
   },
 
-  // getter for current logged in user
-  current: function (req, res) {
-    if (req.isAuthenticated && req.isAuthenticated() ) {
-
-      // TODO change to join after waterline join suport is ready to use
-      // if has a avatar get it after send
-      if(req.user.avatarId  && !req.user.avatar){
-        Images.findOneById(req.user.avatarId).exec(function(err, image) {
-          req.user.avatar = image;
-          respond(req.user);
-        });
-      } else {
-        respond(req.user);
-      }
-    } else {
-      respond();
-    }
-
-    function respond(user){
-      if(req.wantsJSON || req.isSocket){
-        return res.send({user: user});
-      }
-
-      if(!user){
-        return res.redirect('/login')
-      }
-
-      res.locals.messages = [];
-      res.locals.user = {};
-      res.locals.formAction = '/account';
-      res.locals.service = req.param('service');
-      res.locals.consumerId = req.param('consumerId');
-
-      res.locals.interests = [{
-        'id': 'APS',
-        'text': 'Atenção Primária à Saúde'
-      },
-      {
-        'id': 'enfermagem',
-        'text': 'Enfermagem'
-      },
-      {
-        'id': 'amamentação',
-        'text': 'Amamentação'
-      },
-      {
-        'id': 'PNH',
-        'text': 'Humanização'
-      }];
-
-      res.view('user/account',{user: user});
-    }
-  },
-
   forgotPasswordForm: function (req, res) {
     res.view();
   },

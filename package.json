@@ -3,7 +3,9 @@
   "description": "We.js user plugin",
   "version": "0.0.1",
   "dependencies": {
-    "lodash": "^2.4.1"
+    "bcryptjs": "^2.0.2",
+    "lodash": "^2.4.1",
+    "we-helpers": "0.0.5"
   },
   "main": "lib/index.js",
   "scripts": {
