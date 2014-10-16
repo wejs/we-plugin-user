@@ -78,11 +78,6 @@ module.exports = {
       maxLength: 6
     },
 
-    // consumers: {
-    //   collection: 'consumer',
-    //   via: 'owners'
-    // },
-
     // instant | daily | semanal
     emailNotificationFrequency: {
       type: 'string',
