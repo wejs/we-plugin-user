@@ -167,5 +167,22 @@ module.exports = {
       if (user) return done(null, user);
       User.create(data).exec(done);
     });
+  },
+
+  validUsername: function(username){
+    var restrictedUsernames = [
+      'logout',
+      'login',
+      'auth',
+      'api',
+      'admin',
+      'account',
+      'user'
+    ];
+
+    if (restrictedUsernames.indexOf(username) >= 0) {
+      return false;
+    }
+    return true
   }
 };
