@@ -3,6 +3,7 @@
   "description": "We.js user plugin",
   "version": "0.0.2",
   "dependencies": {
+    "async": "^0.9.0",
     "bcryptjs": "^2.0.2",
     "lodash": "^2.4.1",
     "sget": "^0.1.5",
