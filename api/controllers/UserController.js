@@ -8,6 +8,8 @@
 // sails controller utils
 var actionUtil = require('we-helpers').actionUtil;
 var util = require('util');
+var _ = require('lodash');
+var async = require('async');
 
 module.exports = {
 
@@ -63,31 +65,27 @@ module.exports = {
   },
 
   findOne: function findOneRecord (req, res) {
-    var pk = actionUtil.requirePk(req);
-    var query = User.findOne(pk);
-    //query = actionUtil.populateEach(query, req.options);
-    query.exec(function found(err, user) {
-      if (err) return res.serverError(err);
-      if(!user) return res.notFound('No record found with the specified `id`.');
+    if (!req.context.record) return res.notFound('No record found with the specified `id`.');
 
-      if(!req.isAuthenticated()){
-        return res.send({ user: user });
+    var sails = req._sails;
+    var pk = req.context.pk;
+
+    var query = req.context.Model.findOne(pk);
+    query = actionUtil.populateEach(query, req.options);
+    return query.exec(function found(err, user) {
+      if (err) {
+        sails.log.error('UserController: Error on find user', err);
+        return res.serverError(err);
       }
 
-      // Contact.getUsersRelationship(req.user.id, user.id, function(err, contact){
-      //   user.contact = contact;
-      res.send({ user: user });
-      // });
-
+      return res.ok(user);
     });
   },
 
   find: function findRecords (req, res) {
 
     // Look up the model
-    var Model = actionUtil.parseModel(req);
-
-    var modelName = req.options.model || req.options.controller;
+    var Model = req.context.Model;
 
     // Lookup for records that match the specified criteria
     var query = Model.find()
@@ -113,20 +111,16 @@ module.exports = {
         });
       }
 
-      var resultObject = {};
-
-      resultObject[modelName] = matchingRecords;
-      res.send(resultObject);
-
+      return res.ok(matchingRecords);
     });
   },
 
   update: function(req, res) {
+    var sails = req._sails;
     // Look up the model
-    var Model = User;
-
+    var Model = req.context.Model;
     // Locate and validate the required `id` parameter.
-    var pk = actionUtil.requirePk(req);
+    var pk = req.context.pk;
 
     // Create `values` object (monolithic combination of all parameters)
     // But omit the blacklisted params (like JSONP callback param, etc.)
@@ -163,7 +157,7 @@ module.exports = {
       'text': 'Humanização'
     }];
 
-    User.findOneByUsername(values.username).exec(function(err, usr){
+    return User.findOneByUsername(values.username).exec(function(err, usr){
       if (err) {
         sails.log.error('Error on find user by username.',err);
         res.locals.messages = [{
@@ -186,7 +180,7 @@ module.exports = {
       // (Note: this could be achieved in a single query, but a separate `findOne`
       //  is used first to provide a better experience for front-end developers
       //  integrating with the blueprint API.)
-      Model.findOne(pk).populateAll().exec(function found(err, matchingRecord) {
+      return Model.findOne(pk).populateAll().exec(function found(err, matchingRecord) {
 
         if (err) return res.serverError(err);
         if (!matchingRecord) return res.notFound();
@@ -194,7 +188,7 @@ module.exports = {
         // dont change user password in user edit
         values.password = matchingRecord.password;
 
-        Model.update(pk, values).exec(function updated(err, records) {
+        return Model.update(pk, values).exec(function updated(err, records) {
 
           // Differentiate between waterline-originated validation errors
           // and serious underlying issues. Respond with badRequest if a
@@ -214,7 +208,7 @@ module.exports = {
           var updatedRecord = records[0];
 
           if(req.wantsJSON){
-            return res.send({user: updatedRecord});
+            return res.ok(updatedRecord);
           }
 
           res.locals.messages = [{
@@ -225,7 +219,7 @@ module.exports = {
           }];
           res.locals.user = updatedRecord;
 
-          res.view('user/account');
+          return res.view('user/account');
 
         });// </updated>
       }); // </found>
@@ -234,40 +228,5 @@ module.exports = {
 
   forgotPasswordForm: function (req, res) {
     res.view();
-  },
-
-  /**
-   * Get contacts from user with uid
-   * TODO add suport to contacts in we
-   */
-  getContactsName: function(req, res){
-
-    // TODO find only user id contacts
-    User.find()
-    .limit(25)
-    .sort('createdAt ASC')
-    .exec(function(err, users) {
-
-      // Error handling
-      if (err) {
-        return console.log(err);
-
-      // Found multiple users!
-      }
-
-      var userNames = [];
-      async.each(users,
-        function(user, next){
-          userNames.push({
-            id: user.id,
-            model: 'user',
-            text: user.username
-          });
-          next();
-        },function(){
-          res.send(userNames);
-        }
-      );
-    });
   }
 };
