@@ -49,13 +49,5 @@ module.exports.routes = {
     cors: {
       origin: '*'
     }
-  },
-
-  'get /user/:id?/contacts-name': {
-    controller    : 'user',
-    action        : 'getContactsName',
-    cors: {
-      origin: '*'
-    }
   }
 }
