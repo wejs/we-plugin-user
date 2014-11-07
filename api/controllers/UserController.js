@@ -70,9 +70,8 @@ module.exports = {
     var sails = req._sails;
     var pk = req.context.pk;
 
-    var query = req.context.Model.findOne(pk);
-    query = actionUtil.populateEach(query, req.options);
-    return query.exec(function found(err, user) {
+    return req.context.Model.findOne(pk)
+    .exec(function found(err, user) {
       if (err) {
         sails.log.error('UserController: Error on find user', err);
         return res.serverError(err);
