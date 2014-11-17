@@ -14,22 +14,28 @@ var async = require('async');
 module.exports = {
 
   findOneByUsername: function findOneByUsername (req, res, next) {
+    var sails = req._sails;
+    // Look up the model
+    var Model = sails.models.user;
+
     var username = req.param('username');
 
     if(!username) return next();
 
-    if(User.validUsername(username)){
-      return next();
-    }
+    if (!Model.validUsername(username)) return next();
 
-    var query = User.findOne({username: username});
+    var query = Model.findOneByUsername(username);
     //query = actionUtil.populateEach(query, req.options);
     query.exec(function found(err, user) {
-      if (err) return res.serverError(err);
-      if(!user) return res.notFound('No record found with the specified `username`.');
+      if (err) {
+        sails.log.error('findOneByUsername:Error in find user by username', err);
+        return res.serverError(err);
+      }
 
-      if(req.wantsJSON){
-        return res.send({user: user});
+      if(!user) return next();
+
+      if (req.wantsJSON) {
+        return res.ok(user);
       }
 
       if(!user){
@@ -68,9 +74,11 @@ module.exports = {
     if (!req.context.record) return res.notFound('No record found with the specified `id`.');
 
     var sails = req._sails;
-    var pk = req.context.pk;
+    // Look up the model
+    var Model = sails.models.user;
+    var pk = req.param('id');
 
-    return req.context.Model.findOne(pk)
+    return Model.findOne(pk)
     .exec(function found(err, user) {
       if (err) {
         sails.log.error('UserController: Error on find user', err);
@@ -82,9 +90,9 @@ module.exports = {
   },
 
   find: function findRecords (req, res) {
-
+    var sails = req._sails;
     // Look up the model
-    var Model = req.context.Model;
+    var Model = sails.models.user;
 
     // Lookup for records that match the specified criteria
     var query = Model.find()
@@ -95,7 +103,10 @@ module.exports = {
     // TODO: .populateEach(req.options);
     //query = actionUtil.populateEach(query, req.options);
     query.exec(function found(err, matchingRecords) {
-      if (err) return res.serverError(err);
+      if (err) {
+        sails.log.error('find:Error on find users', err);
+        return res.serverError(err);
+      }
 
       // Only `.watch()` for new instances of the model if
       // `autoWatch` is enabled.
@@ -117,9 +128,9 @@ module.exports = {
   update: function(req, res) {
     var sails = req._sails;
     // Look up the model
-    var Model = req.context.Model;
-    // Locate and validate the required `id` parameter.
-    var pk = req.context.pk;
+    var Model = sails.models.user;
+
+    var pk = req.param('id');
 
     // Create `values` object (monolithic combination of all parameters)
     // But omit the blacklisted params (like JSONP callback param, etc.)
@@ -156,7 +167,7 @@ module.exports = {
       'text': 'Humanização'
     }];
 
-    return User.findOneByUsername(values.username).exec(function(err, usr){
+    return Model.findOneByUsername(values.username).exec(function(err, usr){
       if (err) {
         sails.log.error('Error on find user by username.',err);
         res.locals.messages = [{
@@ -223,9 +234,5 @@ module.exports = {
         });// </updated>
       }); // </found>
     });
-  },
-
-  forgotPasswordForm: function (req, res) {
-    res.view();
   }
 };

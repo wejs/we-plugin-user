@@ -1,4 +1,10 @@
 module.exports.routes = {
+  'get /user/:username': {
+    controller    : 'UserController',
+    action        : 'findOneByUsername',
+    model         : 'user'
+  },
+
   'get /avatar/change': {
     controller    : 'AvatarController',
     action        : 'changeAvatarPage',
