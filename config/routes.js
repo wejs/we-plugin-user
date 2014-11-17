@@ -1,4 +1,5 @@
 module.exports.routes = {
+
   'get /user/:username': {
     controller    : 'UserController',
     action        : 'findOneByUsername',
@@ -7,26 +8,17 @@ module.exports.routes = {
 
   'get /avatar/change': {
     controller    : 'AvatarController',
-    action        : 'changeAvatarPage',
-    cors: {
-      origin: '*'
-    }
+    action        : 'changeAvatarPage'
   },
 
   'post /avatar/change': {
     controller    : 'AvatarController',
-    action        : 'uploadAvatar',
-    cors: {
-      origin: '*'
-    }
+    action        : 'uploadAvatar'
   },
 
   'get /avatar/crop': {
     controller    : 'AvatarController',
-    action        : 'cropAvatarPage',
-    cors: {
-      origin: '*'
-    }
+    action        : 'cropAvatarPage'
   },
 
   'post /avatar/crop': {
@@ -37,10 +29,7 @@ module.exports.routes = {
   // get logged in user avatar
   'get /avatar/:id': {
     controller    : 'AvatarController',
-    action        : 'getAvatar',
-    cors: {
-      origin: '*'
-    }
+    action        : 'getAvatar'
   },
 
   // page with  user avatars
@@ -51,9 +40,6 @@ module.exports.routes = {
 
   'post /api/v1/user/:id/avatar': {
     controller    : 'AvatarController',
-    action        : 'changeAvatar',
-    cors: {
-      origin: '*'
-    }
+    action        : 'changeAvatar'
   }
 }
