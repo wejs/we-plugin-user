@@ -128,10 +128,15 @@ module.exports = {
     // sanitize
     user = SanitizeHtmlService.sanitizeAllAttr(user);
 
-    bcrypt.hash(user.password, SALT_WORK_FACTOR, function (err, hash) {
-      user.password = hash;
-      next(err);
-    });
+    // optional password
+    if (user.password) {
+      bcrypt.hash(user.password, SALT_WORK_FACTOR, function (err, hash) {
+        user.password = hash;
+        next(err);
+      });
+    } else {
+      user.password = null;
+    }
   },
 
   beforeUpdate: function(user, next) {
