@@ -5,8 +5,9 @@
  * @description :: System User model
  *
  */
-var bcrypt = require('bcryptjs'),
-  SALT_WORK_FACTOR = 10;
+var bcrypt = require('bcrypt');
+
+//SALT_WORK_FACTOR = 10;
 
 module.exports = {
   schema: true,
@@ -35,6 +36,7 @@ module.exports = {
       unique: true
     },
 
+    // a hashed password
     password: {
       type: 'text'
     },
@@ -100,14 +102,8 @@ module.exports = {
       return obj;
     },
 
-    verifyPassword: function (password) {
-      // if user dont have a password
-      if(!this.password){
-        return false;
-      }
-
-      var isMatch = bcrypt.compareSync(password, this.password);
-      return isMatch;
+    verifyPassword: function (password, cb) {
+      return User.verifyPassword(password, this.password, cb);
     },
 
     changePassword: function(user, oldPassword, newPassword, next){
@@ -121,6 +117,41 @@ module.exports = {
     }
   },
 
+  /**
+   * async password generation
+   *
+   * @param  {string}   password
+   * @param  {Function} next     callback
+   */
+  generatePassword: function(password, next) {
+    var SALT_WORK_FACTOR = sails.config.user.SALT_WORK_FACTOR;
+
+    return bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+      return bcrypt.hash(password, salt, next);
+    });
+  },
+
+  /**
+   * Verify user password
+   *
+   * @param  {string}   password user password string to test
+   * @param  {string}   hash     DB user hased password
+   * @param  {Function} cb       Optional callback
+   * @return {boolean}           return true or false if no callback is passed
+   */
+  verifyPassword: function (password, hash, cb) {
+    // if user dont have a password
+    if(!hash){
+      if(!cb) return false;
+      return cb(null, false);
+    }
+
+    // if dont has a callback do a sync check
+    if (!cb) return bcrypt.compareSync(password, hash);
+    // else compare async
+    bcrypt.compare(password, hash, cb);
+  },
+
     // Lifecycle Callbacks
   beforeCreate: function(user, next) {
     // never save consumers on create
@@ -130,12 +161,16 @@ module.exports = {
 
     // optional password
     if (user.password) {
-      bcrypt.hash(user.password, SALT_WORK_FACTOR, function (err, hash) {
+      this.generatePassword(user.password, function(err, hash) {
+        if (err) return next(err);
+
         user.password = hash;
-        next(err);
+        return next();
       });
     } else {
-      user.password = null;
+      // ensures that user password are undefined
+      delete user.password;
+      next();
     }
   },
 
@@ -145,23 +180,16 @@ module.exports = {
 
     // if has user.newPassword generate the new password
     if (user.newPassword) {
-      bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-        if (err) { return next(err); }
-
-        // hash the password along with our new salt
-        bcrypt.hash(user.newPassword, salt, function (err, crypted) {
-          if(err) { return next(err); }
-
-          // delete newPassword variable
-          delete user.newPassword;
-          // set new password
-          user.password = crypted;
-
-          next();
-        });
+      return this.generatePassword(user.newPassword, function(err, hash) {
+        if (err) return next(err);
+        // delete newPassword variable
+        delete user.newPassword;
+        // set new password
+        user.password = hash;
+        return next();
       });
     } else {
-      next();
+      return next();
     }
   },
 

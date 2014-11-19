@@ -4,7 +4,7 @@
   "version": "0.0.4",
   "dependencies": {
     "async": "^0.9.0",
-    "bcryptjs": "^2.0.2",
+    "bcrypt": "^0.8.0",
     "lodash": "^2.4.1",
     "sget": "^0.1.5",
     "we-helpers": "0.0.5"
