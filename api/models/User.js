@@ -7,8 +7,6 @@
  */
 var bcrypt = require('bcrypt');
 
-//SALT_WORK_FACTOR = 10;
-
 module.exports = {
   schema: true,
   attributes: {
