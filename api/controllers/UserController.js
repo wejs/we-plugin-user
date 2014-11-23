@@ -48,41 +48,27 @@ module.exports = {
       res.locals.service = req.param('service');
       res.locals.consumerId = req.param('consumerId');
 
-      res.locals.interests = [{
-        'id': 'APS',
-        'text': 'Atenção Primária à Saúde'
-      },
-      {
-        'id': 'enfermagem',
-        'text': 'Enfermagem'
-      },
-      {
-        'id': 'amamentação',
-        'text': 'Amamentação'
-      },
-      {
-        'id': 'PNH',
-        'text': 'Humanização'
-      }];
+      res.locals.interests = [];
 
       return res.view('user/user');
-
     });
   },
 
   findOne: function findOneRecord (req, res) {
-    if (!req.context.record) return res.notFound('No record found with the specified `id`.');
-
     var sails = req._sails;
     // Look up the model
     var Model = sails.models.user;
     var pk = req.param('id');
 
-    return Model.findOne(pk)
+    return Model.findOneById(pk)
     .exec(function found(err, user) {
       if (err) {
         sails.log.error('UserController: Error on find user', err);
         return res.serverError(err);
+      }
+
+      if (!user) {
+        return res.notFound();
       }
 
       return res.ok(user);
