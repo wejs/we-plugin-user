@@ -74,8 +74,17 @@ module.exports = {
 
     language: {
       type: 'string',
-      defaultsTo: 'en-us',
+      defaultsTo: 'pt-br',
       maxLength: 6
+    },
+
+    // estado UF
+    locationState: {
+      type: 'string'
+    },
+
+    city: {
+      type: 'string'
     },
 
     // instant | daily | semanal

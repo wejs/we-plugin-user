@@ -111,11 +111,17 @@ module.exports = {
     });
   },
 
-  update: function(req, res) {
+  create: function createRecord (req, res, next) {
+    req._sails.log.warn('only create user with auth plugin')
+    return next();
+  },
+
+  update: function updateUserProfile(req, res) {
+    if(!req.isAuthenticated()) return res.forbidden();
+
     var sails = req._sails;
     // Look up the model
     var Model = sails.models.user;
-
     var pk = req.param('id');
 
     // Create `values` object (monolithic combination of all parameters)
@@ -136,23 +142,6 @@ module.exports = {
     res.locals.service = req.param('service');
     res.locals.consumerId = req.param('consumerId');
 
-    res.locals.interests = [{
-      'id': 'APS',
-      'text': 'Atenção Primária à Saúde'
-    },
-    {
-      'id': 'enfermagem',
-      'text': 'Enfermagem'
-    },
-    {
-      'id': 'amamentação',
-      'text': 'Amamentação'
-    },
-    {
-      'id': 'PNH',
-      'text': 'Humanização'
-    }];
-
     return Model.findOneByUsername(values.username).exec(function(err, usr){
       if (err) {
         sails.log.error('Error on find user by username.',err);
@@ -162,8 +151,9 @@ module.exports = {
         }];
         return res.serverError({}, 'auth/register');
       }
+
       // user already registered
-      if ( usr && (usr.id !== pk) ) {
+      if (usr && (usr.id != pk) ) {
         res.locals.messages = [{
           status: 'danger',
           message: res.i18n('auth.register.error.username.registered', { username: values.username })
@@ -176,7 +166,7 @@ module.exports = {
       // (Note: this could be achieved in a single query, but a separate `findOne`
       //  is used first to provide a better experience for front-end developers
       //  integrating with the blueprint API.)
-      return Model.findOne(pk).populateAll().exec(function found(err, matchingRecord) {
+      return Model.findOne(pk).exec(function found(err, matchingRecord) {
 
         if (err) return res.serverError(err);
         if (!matchingRecord) return res.notFound();
@@ -189,8 +179,10 @@ module.exports = {
           // Differentiate between waterline-originated validation errors
           // and serious underlying issues. Respond with badRequest if a
           // validation error is encountered, w/ validation info.
-          if (err) return res.negotiate(err);
-
+          if (err) {
+            sails.log.error('Error on update user', err);
+            return res.negotiate(err);
+          }
 
           // Because this should only update a single record and update
           // returns an array, just use the first item.  If more than one
