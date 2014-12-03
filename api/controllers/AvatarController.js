@@ -98,8 +98,6 @@ module.exports = {
     req.file('avatar').upload(function (err, files) {
       if (err){ return res.serverError(err); }
 
-      sails.log.warn('file',files);
-
       if(!files){
         req.flash('warning-message',res.i18n('avatar.upload.noFile'));
         return res.redirect('/avatar');
@@ -237,7 +235,7 @@ module.exports = {
     if(!req.isAuthenticated()){
       return res.forbidden();
     }
-sails.log.warn(',>>', imageId)
+
     Images.findOneById(imageId)
     .exec(function(err, image){
       if (err) return res.negotiate(err);
@@ -249,7 +247,7 @@ sails.log.warn(',>>', imageId)
 
       // set current user vars
       req.user.avatar = image.id;
-sails.log.warn(',>>', image.id)
+
       // update db user
       User.update(
         {id: req.user.id},
