@@ -46,8 +46,8 @@ module.exports = {
     User.findOneById(id).exec(function(err, user){
       if (err) return res.negotiate(err);
 
-      if(user && user.avatarId){
-        Images.findOneById(user.avatarId).exec(function(err, image) {
+      if(user && user.avatar){
+        Images.findOneById(user.avatar).exec(function(err, image) {
           if (err) return res.negotiate(err);
 
           FileImageService.getFileOrResize(image.name,style ,function(err, contents){
@@ -131,7 +131,6 @@ module.exports = {
             .exec(function(err, user){
               if (err) return res.negotiate(err);
 
-              user.avatarId = salvedFile.id;
               user.avatar = salvedFile.id;
 
               user.save(function(err){
@@ -184,7 +183,7 @@ module.exports = {
       return res.badRequest('Width, height, x and y params is required');
     }
 
-    if(req.user.avatarId !== fileId){
+    if(req.user.avatar !== fileId){
       return res.forbidden();
     }
 
@@ -233,14 +232,13 @@ module.exports = {
 
   changeAvatar: function (req, res) {
     // TODO validate req.files.files
-    var imageId = req.param('imageId');
+    var imageId = req.param('image');
 
     if(!req.isAuthenticated()){
       return res.forbidden();
     }
-
-    Images.findOne()
-    .where({id: imageId})
+sails.log.warn(',>>', imageId)
+    Images.findOneById(imageId)
     .exec(function(err, image){
       if (err) return res.negotiate(err);
 
@@ -250,12 +248,12 @@ module.exports = {
       }
 
       // set current user vars
-      req.user.avatarId = image.id;
-
+      req.user.avatar = image.id;
+sails.log.warn(',>>', image.id)
       // update db user
       User.update(
         {id: req.user.id},
-        {avatarId: image.id}
+        {avatar: image.id}
       ).exec(function afterwards(err){
         if (err) return res.negotiate(err);
         res.send({

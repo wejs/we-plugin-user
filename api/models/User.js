@@ -45,14 +45,6 @@ module.exports = {
 
     birthDate: 'date',
 
-    image: {
-      type: 'string'
-    },
-
-    avatarId: {
-      type: 'string'
-    },
-
     avatar: {
       model: 'images'
     },
