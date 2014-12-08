@@ -19,13 +19,12 @@ module.exports = {
     username: {
       type: 'string',
       unique: true,
-      required: true,
-      regex: /^[a-z0-9_-]{4,30}$/
+      required: true
     },
 
-    biography: {
-      type: 'text'
-    },
+    biography: { type: 'text' },
+
+    gender: { type: 'text' },
 
     email: {
       // Email type will get validated by the ORM
