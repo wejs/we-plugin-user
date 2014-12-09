@@ -154,6 +154,9 @@ module.exports = {
   beforeCreate: function(user, next) {
     // never save consumers on create
     delete user.consumers;
+    // dont allow to set admin and moderator flags
+    delete user.isAdmin;
+    delete user.isModerator;
     // sanitize
     user = SanitizeHtmlService.sanitizeAllAttr(user);
 
@@ -175,7 +178,6 @@ module.exports = {
   beforeUpdate: function(user, next) {
     // sanitize
     user = SanitizeHtmlService.sanitizeAllAttr(user);
-
     // if has user.newPassword generate the new password
     if (user.newPassword) {
       return this.generatePassword(user.newPassword, function(err, hash) {

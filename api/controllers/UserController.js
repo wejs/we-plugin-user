@@ -171,6 +171,9 @@ module.exports = {
         if (err) return res.serverError(err);
         if (!matchingRecord) return res.notFound();
 
+        // dont allow to change admin and moderator flags here
+        values.isAdmin = matchingRecord.isAdmin;
+        values.isModerator = matchingRecord.isModerator;
         // dont change user password in user edit
         values.password = matchingRecord.password;
 
