@@ -124,6 +124,9 @@ module.exports = {
     var Model = sails.models.user;
     var pk = req.param('id');
 
+    // forbidden one account woner can update profile
+    if(req.user.id != pk) return res.forbidden();
+
     // Create `values` object (monolithic combination of all parameters)
     // But omit the blacklisted params (like JSONP callback param, etc.)
     var values = actionUtil.parseValues(req);
@@ -215,5 +218,10 @@ module.exports = {
         });// </updated>
       }); // </found>
     });
+  },
+
+  destroy: function(req, res) {
+    // user account delete dont are implemented
+    return res.notFound();
   }
 };

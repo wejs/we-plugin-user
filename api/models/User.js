@@ -150,7 +150,7 @@ module.exports = {
     bcrypt.compare(password, hash, cb);
   },
 
-    // Lifecycle Callbacks
+  // Lifecycle Callbacks
   beforeCreate: function(user, next) {
     // never save consumers on create
     delete user.consumers;
