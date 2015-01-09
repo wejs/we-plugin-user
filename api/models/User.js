@@ -84,15 +84,23 @@ module.exports = {
       defaultsTo: 'instant'
     },
 
-    toJSON: function() {
+    // * @param  {boolean} preserve    true to preserve database data
+    toJSON: function(preserve) {
       var obj = this.toObject();
-      if(!obj.displayName){
-        obj.displayName = obj.username;
+
+      var bool = preserve || false;
+
+      if (!bool) {
+        
+        if(!obj.displayName){
+          obj.displayName = obj.username;
+        }
+
+        // delete and hide user email
+        delete obj.email;
+        // remove password hash from view
+        delete obj.password;
       }
-      // delete and hide user email
-      delete obj.email;
-      // remove password hash from view
-      delete obj.password;
 
       // ember data type
       obj.type = 'user';
