@@ -1,0 +1,35 @@
+{{#if currentUser.id}}
+<ul class="nav navbar-nav navbar-right">
+  <li>
+    {{we-connection-status}}
+
+    <a href="#" class="dropdown-toggle user-menu-link" data-toggle="dropdown">
+      <span class="avatar-small">{{we-avatar userId=currentUser.id}}</span>
+      <span class="user-name " >{{currentUser.displayName}}</span><b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="#ChangeAvatarModal" {{action "showAvatarChangeModal"}} >
+          {{t 'Change avatar'}}
+        </a>
+      </li>
+      <li class="divider"></li>
+      <li>
+        {{#link-to 'user' currentUser.id}}
+          {{t 'View / edit profile'}}
+        {{/link-to}}
+      </li>
+{{!--       <li class="divider"></li>
+      <li>
+        {{#link-to 'authChangePassword'}}
+          {{t 'Change password'}}
+        {{/link-to}}
+      </li> --}}
+      <li class="divider"></li>
+      <li>
+        <a href="/auth/logout" {{action 'logOut'}} class="">Sair</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+{{/if}}

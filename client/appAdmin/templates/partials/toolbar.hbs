@@ -1,0 +1,12 @@
+<div class='row'>
+  <div class='col-md-12'>
+  	{{#if record.idInProvider}}
+	  	{{#link-to 'user.edit' record.id class="btn btn-info"}}
+	      Editar
+	    {{/link-to}}  	
+  	{{/if}}
+  	{{#link-to 'user.index' class="btn btn-default"}}
+      Voltar
+    {{/link-to}}    
+  </div>
+</div>
