@@ -84,6 +84,11 @@ module.exports = {
       defaultsTo: 'instant'
     },
 
+    roles: {
+      collection: 'role',
+      via: 'users'
+    },
+
     toJSON: function() {
       var obj = this.toObject();
       if(!obj.displayName){
@@ -93,7 +98,8 @@ module.exports = {
       delete obj.email;
       // remove password hash from view
       delete obj.password;
-
+      // delete context cache
+      delete obj._context;
       // ember data type
       obj.type = 'user';
 

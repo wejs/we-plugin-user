@@ -179,6 +179,8 @@ module.exports = {
         values.isModerator = matchingRecord.isModerator;
         // dont change user password in user edit
         values.password = matchingRecord.password;
+        // dont change roles on update
+        values.roles = matchingRecord.roles;
 
         return Model.update(pk, values).exec(function updated(err, records) {
 
@@ -223,5 +225,9 @@ module.exports = {
   destroy: function(req, res) {
     // user account delete dont are implemented
     return res.notFound();
-  }
+  },
+
+  // block add and remove routes
+  add: function(req, res) { return res.notFound(); },
+  remove: function(req, res) { return res.notFound(); }
 };
