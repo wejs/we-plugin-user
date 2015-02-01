@@ -7,7 +7,7 @@
     "bcrypt": "^0.8.0",
     "lodash": "^2.4.1",
     "sget": "^0.1.5",
-    "we-helpers": ">=0.0.5"
+    "we-helpers": ">=0.0.7"
   },
   "main": "lib/index.js",
   "scripts": {
