@@ -4,8 +4,9 @@
  * @author Alberto Souza <alberto@wejs.org>
  *
  * @examples
- *   {{we-image file=imageModel size="medium"}}
- *   {{we-image src=imageSrc size="medium"}}
+ *   {{user-avatar user=record.creator size="thumbnail"}}
+ *   {{user-avatar user=record.creator size="large"}}
+ *
  */
 
 App.UserAvatarComponent = Ember.Component.extend({

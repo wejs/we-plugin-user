@@ -78,6 +78,18 @@ $(function() {
     }.property('App.auth.isAuthenticated', 'from', 'to')
   });
 
+  App.User.reopen({
+    contactFrom: DS.belongsTo( 'contact', {
+      async: true,
+      inverse: 'from'
+    }),
+
+    contactTo: DS.belongsTo( 'contact', {
+      async: true,
+      inverse: 'to'
+    })
+  });
+
 
   we.events.on('sails:created:contact', function(message) {
     var userId = App.get('currentUser.id');
