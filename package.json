@@ -1,13 +1,13 @@
 {
   "name": "we-plugin-user",
   "description": "We.js user plugin",
-  "version": "0.0.13",
+  "version": "0.2.3",
   "dependencies": {
     "async": "^0.9.0",
     "bcrypt": "^0.8.0",
     "lodash": "^2.4.1",
     "sget": "^0.1.5",
-    "we-helpers": "0.0.5"
+    "we-helpers": ">=0.0.7"
   },
   "main": "lib/index.js",
   "scripts": {
@@ -32,5 +32,8 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:wejs/we-plugin-user.git"
+  },
+  "sails": {
+    "isHook": true
   }
 }

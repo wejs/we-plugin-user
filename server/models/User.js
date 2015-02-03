@@ -85,13 +85,18 @@ module.exports = {
     },
 
     // * @param  {boolean} preserve    true to preserve database data
-    toJSON: function(preserve) {
+    roles: {
+      collection: 'role',
+      via: 'users'
+    },
+
+    toJSON: function() {
       var obj = this.toObject();
 
       var bool = preserve || false;
 
       if (!bool) {
-        
+
         if(!obj.displayName){
           obj.displayName = obj.username;
         }
@@ -100,6 +105,8 @@ module.exports = {
         delete obj.email;
         // remove password hash from view
         delete obj.password;
+      // delete context cache
+      delete obj._context;
       }
 
       // ember data type
