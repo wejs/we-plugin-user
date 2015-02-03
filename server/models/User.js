@@ -90,7 +90,7 @@ module.exports = {
       via: 'users'
     },
 
-    toJSON: function() {
+    toJSON: function(preserve) {
       var obj = this.toObject();
 
       var bool = preserve || false;
