@@ -79,7 +79,7 @@ App.WeAvatarModalComponent = Ember.Component.extend({
         data:  JSON.stringify(cords),
         contentType: 'application/json'
       }).done(function(newImage){
-        self.get('store').push('image', newImage.image);
+        self.get('store').push('images', newImage.image);
         self.send('saveAvatar');
       }).fail(function(e){
         console.error('Error on image crop',e);
@@ -101,7 +101,7 @@ App.WeAvatarModalComponent = Ember.Component.extend({
       }).done(function (data) {
         var avatar = data.avatar;
         // update user and image on store
-        var storeImage = self.get('store').push('image', avatar);
+        var storeImage = self.get('store').push('images', avatar);
         data.avatar = storeImage;
         // set current user avatarId
         App.currentUser.set('avatar', storeImage);
