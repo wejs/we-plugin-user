@@ -5,7 +5,7 @@ App.Router.map(function(match) {
     this.route('edit', {path: '/:user_id/edit'});
   });
 
-  this.route('user.create',{path: '/add/user'});
+  // this.route('user.create',{path: '/add/user'});
 
 });
 
