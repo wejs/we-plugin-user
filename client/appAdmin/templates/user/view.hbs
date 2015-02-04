@@ -7,7 +7,7 @@
       {{#each attribute in attributes}}
         <tr>
           <th>{{attribute}}</th>
-          <td>{{sub-atribute ../record attribute}}</td>
+          <td>{{sub-atribute record attribute}}</td>
         </tr>        
       {{/each}}    
     </tbody>
@@ -15,3 +15,5 @@
 </div>
 
 {{partial "partials/toolbar"}}
+
+{{we-account-modal user=record}}

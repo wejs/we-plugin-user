@@ -1,7 +1,8 @@
 {{we-title title="Usuários"}}
 
 <div class="container-fluid">
-  {{we-user-search weUserSearchSelected="weUserSearchSelected" weUserSearchClass="weUserSearch"}}
+  {{we-user-search weUserSearchSelected="weUserSearchSelected" weUserSearchClass="weUserSearch" weSearchField="email" delegate=controller}}
+  <small class="btn btn-primary" data-toggle="modal" data-target="#we-oauth-search">Buscar CPF</small>
 </div>
 
 <br>
@@ -52,5 +53,7 @@
   <h2 class="text-center">Selecione um usuário!</h2>
 </div>
 {{/if}}
+
+{{we-oauth-search weOauthSearchSelected="weOauthSearchSelected" store=controller.store}}
 
 

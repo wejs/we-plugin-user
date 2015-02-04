@@ -11,16 +11,22 @@ App.Router.map(function(match) {
 
 App.UserIndexRoute = Ember.Route.extend({
   setupController: function (controller, model) {
-    controller.set('user', null);
-  }
+    controller.setProperties({
+      user: null,
+      content: model
+    });
+  },
+
+
 });
 
 App.UserViewRoute = Ember.Route.extend({
   model: function (params) {
-    return {
-      attributes: Ember.get('App.User.attributes').keys.list,
-      record: this.get('store').find('user', params.user_id)
-    };
+    var promisse = {};
+    promisse.attributes = Ember.get('App.User.attributes').keys.list;
+    promisse.record = this.get('store').find('user', params.user_id);
+
+    return Ember.RSVP.hash(promisse);
   }
 });
 
