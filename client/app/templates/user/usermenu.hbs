@@ -4,7 +4,7 @@
     {{we-connection-status}}
 
     <a href="#" class="dropdown-toggle user-menu-link" data-toggle="dropdown">
-      <span class="avatar-small">{{we-avatar userId=currentUser.id}}</span>
+      <span class="avatar-small">{{user-avatar user=currentUser size="thumbnail"}}</span>
       <span class="user-name " >{{currentUser.displayName}}</span><b class="caret"></b>
     </a>
     <ul class="dropdown-menu">
@@ -19,12 +19,13 @@
           {{t 'View / edit profile'}}
         {{/link-to}}
       </li>
-{{!--       <li class="divider"></li>
+      {{#if adminMenu}}
       <li>
-        {{#link-to 'authChangePassword'}}
-          {{t 'Change password'}}
-        {{/link-to}}
-      </li> --}}
+        <a href="/admin">
+          Administrar
+        </a>
+      </li>      
+      {{/if}}
       <li class="divider"></li>
       <li>
         <a href="/auth/logout" {{action 'logOut'}} class="">Sair</a>

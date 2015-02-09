@@ -6,6 +6,11 @@
       return App.get('currentUser');
     }.property('App.currentUser'),
 
+    adminMenu: function (){
+      if (this.get('currentUser.isAdmin') || this.get('currentUser.isModerator')) return true;
+      return false;
+    }.property('currentUser'),
+
     init: function() {
       var self = this;
       if(App.currentUser.id){
