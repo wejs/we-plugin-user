@@ -22,6 +22,12 @@ module.exports = {
       required: true
     },
 
+    cpf: {
+      type: 'string',
+      unique: true,
+      required: true
+    },
+
     biography: { type: 'text' },
 
     gender: { type: 'text' },
