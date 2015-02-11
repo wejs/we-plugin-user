@@ -11,15 +11,6 @@ App.UserAdapter = App.ApplicationRESTAdapter.extend();
 //   primaryKey: 'idInProvider'
 // });
 
-we.hooks.on('we-bootstrap-configure-after-success',function(data,next){
-  // set host after we.js get server and cliend configs
-  App.UserAdapter.reopen({
-    'host': we.configs.server.providers.accounts
-  });
-
-  next();
-});
-
 $(function() {
   App.User.reopen({
     avatar:  DS.belongsTo( 'images', {
