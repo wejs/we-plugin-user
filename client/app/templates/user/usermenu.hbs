@@ -22,13 +22,13 @@
       {{#if adminMenu}}
       <li>
         <a href="/admin">
-          Administrar
+          {{t 'menu.link.manage'}}
         </a>
       </li>      
       {{/if}}
       <li class="divider"></li>
       <li>
-        <a href="/auth/logout" {{action 'logOut'}} class="">Sair</a>
+        <a href="/auth/logout" {{action 'logOut'}} class="">{{t 'Exit'}}</a>
       </li>
     </ul>
   </li>
