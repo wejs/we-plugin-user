@@ -1,3 +1,7 @@
+/**
+ * Script to generate one user
+ */
+
 var sget = require('sget');
 
 var userStub = {
@@ -17,10 +21,15 @@ module.exports = function createUser(done) {
   sails.log.info('--');
   sails.log.info('-');
 
-  // alows user set new user data
-  var whantsSendUserData = sget('Do you want to choose the user data to be created?. \n y or n?');
-  // remove \n
-  whantsSendUserData = whantsSendUserData.replace('\n','');
+  // first get confirm flag from cli arguments
+  var whantsSendUserData = process.argv[2];
+  // if dont find, request it to user
+  if (!whantsSendUserData) {
+    // alows user set new user data
+    var whantsSendUserData = sget('Do you want to choose the user data to be created?. \n y or n?');
+    // remove \n
+    whantsSendUserData = whantsSendUserData.replace('\n','');
+  }
 
   if ( whantsSendUserData === 'y') {
     userStub.displayName = sget('What is the displayName?');
