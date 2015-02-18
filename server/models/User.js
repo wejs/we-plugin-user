@@ -19,7 +19,8 @@ module.exports = {
     username: {
       type: 'string',
       unique: true,
-      required: true
+      required: true,
+      regex: /^[a-z0-9_-]{4,30}$/
     },
 
     biography: { type: 'text' },
