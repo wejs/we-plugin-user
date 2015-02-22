@@ -33,6 +33,8 @@ module.exports = {
       }
 
       if(!user) return next();
+      // save request in user var for toJSON
+      user.req = req;
 
       if (req.wantsJSON) {
         return res.ok(user);
@@ -67,6 +69,9 @@ module.exports = {
         return res.serverError(err);
       }
 
+      // save request in user var for toJSON
+      user.req = req;
+
       if (!user) {
         return res.notFound();
       }
@@ -94,18 +99,10 @@ module.exports = {
         return res.serverError(err);
       }
 
-      // Only `.watch()` for new instances of the model if
-      // `autoWatch` is enabled.
-      if (req._sails.hooks.pubsub && req.isSocket) {
-        Model.subscribe(req, matchingRecords);
-        if (req.options.autoWatch) {
-          Model.watch(req);
-        }
-        // Also subscribe to instances of all associated models
-        _.each(matchingRecords, function (record) {
-          actionUtil.subscribeDeep(req, record);
-        });
-      }
+      _.each(matchingRecords, function (record) {
+        // save request in user var for toJSON
+        record.req = req;
+      });
 
       return res.ok(matchingRecords);
     });
@@ -202,6 +199,7 @@ module.exports = {
           }
 
           var updatedRecord = records[0];
+          updatedRecord.req = req;
 
           if(req.wantsJSON){
             return res.ok(updatedRecord);

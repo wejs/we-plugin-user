@@ -91,27 +91,33 @@ module.exports = {
       via: 'users'
     },
 
-    toJSON: function(preserve) {
+    toJSON: function() {
+      var req = this.req;
+      delete this.req;
+
+      // delete and hide user email
+      delete obj.email;
+      // remove password hash from view
+      delete obj.password;
+ 
       var obj = this.toObject();
 
-      var bool = preserve || false;
-
-      if (!bool) {
-
-        if(!obj.displayName){
-          obj.displayName = obj.username;
+      if (req && req.isAuthenticated()) {
+        if (req.user.id == obj.id || req.user.isAdmin) {
+          // campos privados
+          obj.email = this.email;
         }
-
-        // delete and hide user email
-        delete obj.email;
-        // remove password hash from view
-        delete obj.password;
-      // delete context cache
-      delete obj._context;
       }
 
+      if (!obj.displayName) {
+        obj.displayName = obj.username;
+      }
+        
       // ember data type
       obj.type = 'user';
+
+     // delete context cache
+      delete obj._context;
 
       return obj;
     },
