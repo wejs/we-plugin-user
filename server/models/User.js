@@ -20,7 +20,7 @@ module.exports = {
       type: 'string',
       unique: true,
       required: true,
-      regex: /^[a-z0-9_-]{4,30}$/
+      regex: /^[A-Za-z0-9_-]{4,30}$/
     },
 
     biography: { type: 'text' },
