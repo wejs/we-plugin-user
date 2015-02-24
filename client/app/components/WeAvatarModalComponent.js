@@ -19,7 +19,8 @@ App.WeAvatarModalComponent = Ember.Component.extend({
     we.events.on('showAvatarChangeModal',this.onShowAvatarChangeModal.bind(this));
   },
   filesDidChange: function() {
-    this.set('file',this.get('files').item(0));
+    if (Ember.isEmpty(this.get('files'))) return;
+    this.set('file',this.get('files').item(0));    
   }.observes('files'),
   onShowAvatarChangeModal: function(data){
     this.set('user', data.user);
@@ -28,6 +29,12 @@ App.WeAvatarModalComponent = Ember.Component.extend({
   willDestroyElement: function(){
     we.events.off('showAvatarChangeModal',this.onShowAvatarChangeModal);
   },
+
+  hideAction: function (){
+    var file = this.get('file');
+    return Ember.isNone(file);
+  }.property('file'),
+
   actions: {
     show: function(){
       $('#avatarChangeModal').modal('show');
@@ -39,7 +46,9 @@ App.WeAvatarModalComponent = Ember.Component.extend({
     clean: function(){
       this.setProperties({
         cropImageData: null,
-        salvedImage: null
+        salvedImage: null,
+        file: null,
+        imageSelected: false
       });
     },
     selectFile: function(){
@@ -64,6 +73,7 @@ App.WeAvatarModalComponent = Ember.Component.extend({
           self.set('isLoading',false);
         }, function(error) {
           // Handle failure
+          self.set('isLoading',false);
           console.error('error on upload avatar', error);
         });
       }
@@ -72,6 +82,8 @@ App.WeAvatarModalComponent = Ember.Component.extend({
       var self = this;
       var cords = this.get('cropImageData');
       var imageId = this.get('salvedImage.id');
+
+      self.set('isLoading',true);
 
       $.ajax({
         type: 'post',
