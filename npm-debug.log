@@ -1,0 +1,121 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'publish' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.36
+4 verbose node symlink /usr/bin/node
+5 verbose publish [ '.' ]
+6 verbose cache add [ '.', null ]
+7 verbose cache add name=undefined spec="." args=[".",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: '.',
+8 verbose parsed url   path: '.',
+8 verbose parsed url   href: '.' }
+9 silly lockFile 3a52ce78- .
+10 verbose lock . /home/a/.npm/3a52ce78-.lock
+11 verbose tar pack [ '/home/a/.npm/we-plugin-user/0.2.15/package.tgz', '.' ]
+12 verbose tarball /home/a/.npm/we-plugin-user/0.2.15/package.tgz
+13 verbose folder .
+14 info prepublish we-plugin-user@0.2.15
+15 verbose unsafe-perm in lifecycle true
+16 silly lockFile 1f1177db-tar tar://.
+17 verbose lock tar://. /home/a/.npm/1f1177db-tar.lock
+18 silly lockFile c7dd8f91-e-plugin-user-0-2-15-package-tgz tar:///home/a/.npm/we-plugin-user/0.2.15/package.tgz
+19 verbose lock tar:///home/a/.npm/we-plugin-user/0.2.15/package.tgz /home/a/.npm/c7dd8f91-e-plugin-user-0-2-15-package-tgz.lock
+20 silly lockFile 1f1177db-tar tar://.
+21 silly lockFile 1f1177db-tar tar://.
+22 silly lockFile c7dd8f91-e-plugin-user-0-2-15-package-tgz tar:///home/a/.npm/we-plugin-user/0.2.15/package.tgz
+23 silly lockFile c7dd8f91-e-plugin-user-0-2-15-package-tgz tar:///home/a/.npm/we-plugin-user/0.2.15/package.tgz
+24 silly lockFile 3a3babc2-pm-we-plugin-user-0-2-15-package /home/a/.npm/we-plugin-user/0.2.15/package
+25 verbose lock /home/a/.npm/we-plugin-user/0.2.15/package /home/a/.npm/3a3babc2-pm-we-plugin-user-0-2-15-package.lock
+26 silly lockFile 3a3babc2-pm-we-plugin-user-0-2-15-package /home/a/.npm/we-plugin-user/0.2.15/package
+27 silly lockFile 3a3babc2-pm-we-plugin-user-0-2-15-package /home/a/.npm/we-plugin-user/0.2.15/package
+28 silly lockFile 3a52ce78- .
+29 silly lockFile 3a52ce78- .
+30 silly publish { name: 'we-plugin-user',
+30 silly publish   description: 'We.js user plugin',
+30 silly publish   version: '0.2.15',
+30 silly publish   dependencies:
+30 silly publish    { async: '^0.9.0',
+30 silly publish      bcrypt: '^0.8.0',
+30 silly publish      lodash: '^2.4.1',
+30 silly publish      sget: '^0.1.5',
+30 silly publish      'we-helpers': '>=0.0.7' },
+30 silly publish   main: 'lib/index.js',
+30 silly publish   scripts:
+30 silly publish    { lint: 'jshint .',
+30 silly publish      checkStyle: 'jscs .',
+30 silly publish      pretest: 'npm run-script lint && npm run-script checkStyle',
+30 silly publish      test: 'istanbul cover ./node_modules/.bin/_mocha test',
+30 silly publish      posttest: 'istanbul check-coverage && rm -rf coverage',
+30 silly publish      prepublish: 'npm prune' },
+30 silly publish   publishConfig: { registry: 'http://registry.npmjs.org' },
+30 silly publish   author: { name: 'Alberto Souza', email: 'alberto.souza.dev@gmail.com' },
+30 silly publish   license: 'ISC',
+30 silly publish   devDependencies:
+30 silly publish    { mocha: '^1.18.2',
+30 silly publish      istanbul: '^0.2.7',
+30 silly publish      jshint: '^2.5.0',
+30 silly publish      jscs: '^1.4.5' },
+30 silly publish   repository: { type: 'git', url: 'git@github.com:wejs/we-plugin-user.git' },
+30 silly publish   sails: { isHook: true },
+30 silly publish   readme: '# We.js User plugin\n\n[![Dependency Status](https://david-dm.org/wejs/we-plugin-user.png)](https://david-dm.org/wejs/we-plugin-user)\n\n> Flag everything!\n\n## API:\nTODO\n\n## Sails.js resources:\n\n - Avatar Controller\n - User Controller\n - User Model\n\n## Avaible URLS:\nTODO\n\n#### NPM Info:\n[![NPM](https://nodei.co/npm/we-plugin-user.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/we-plugin-user/)\n\n## Copyright and license\n\nCopyright 2013-2014 Alberto Souza <alberto.souza.dev@gmail.com> and contributors , under [the MIT license](LICENSE).\n',
+30 silly publish   readmeFilename: 'README.md',
+30 silly publish   gitHead: 'ef65e953c559f6c2dcd8a7c711b344e8df94ae0b',
+30 silly publish   bugs: { url: 'https://github.com/wejs/we-plugin-user/issues' },
+30 silly publish   homepage: 'https://github.com/wejs/we-plugin-user',
+30 silly publish   _id: 'we-plugin-user@0.2.15',
+30 silly publish   _shasum: '7ccb135952b59a08eced936dc969703ef9ddc680',
+30 silly publish   _from: '.' }
+31 verbose request where is /we-plugin-user
+32 verbose request registry http://registry.npmjs.org/
+33 verbose request id 4a9fb849e447f98e
+34 verbose url raw /we-plugin-user
+35 verbose url resolving [ 'http://registry.npmjs.org/', './we-plugin-user' ]
+36 verbose url resolved http://registry.npmjs.org/we-plugin-user
+37 verbose request where is http://registry.npmjs.org/we-plugin-user
+38 info trying registry request attempt 1 at 20:05:08
+39 http PUT http://registry.npmjs.org/we-plugin-user
+40 http 403 http://registry.npmjs.org/we-plugin-user
+41 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+41 verbose headers   'content-type': 'application/json',
+41 verbose headers   'cache-control': 'max-age=60',
+41 verbose headers   'content-length': '3857',
+41 verbose headers   'accept-ranges': 'bytes',
+41 verbose headers   date: 'Tue, 24 Feb 2015 23:05:11 GMT',
+41 verbose headers   via: '1.1 varnish',
+41 verbose headers   connection: 'keep-alive',
+41 verbose headers   'x-served-by': 'cache-atl6227-ATL',
+41 verbose headers   'x-cache': 'MISS',
+41 verbose headers   'x-cache-hits': '0',
+41 verbose headers   'x-timer': 'S1424819111.190341,VS0,VE683' }
+42 error publish Failed PUT 403
+43 error Error: forbidden cannot modify pre-existing version: 0.2.15
+43 error old={"name":"we-plugin-user","description":"We.js user plugin","version":"0.2.15","dependencies":{"async":"^0.9.0","bcrypt":"^0.8.0","lodash":"^2.4.1","sget":"^0.1.5","we-helpers":">=0.0.7"},"main":"lib/index.js","scripts":{"lint":"jshint .","checkStyle":"jscs .","pretest":"npm run-script lint && npm run-script checkStyle","test":"istanbul cover ./node_modules/.bin/_mocha test","posttest":"istanbul check-coverage && rm -rf coverage","prepublish":"npm prune"},"publishConfig":{"registry":"http://registry.npmjs.org"},"author":{"name":"Alberto Souza","email":"alberto.souza.dev@gmail.com"},"license":"ISC","devDependencies":{"mocha":"^1.18.2","istanbul":"^0.2.7","jshint":"^2.5.0","jscs":"^1.4.5"},"repository":{"type":"git","url":"git@github.com:wejs/we-plugin-user.git"},"sails":{"isHook":true},"bugs":{"url":"https://github.com/wejs/we-plugin-user/issues"},"homepage":"https://github.com/wejs/we-plugin-user","_id":"we-plugin-user@0.2.15","dist":{"shasum":"f7e6b19aca9b6f2220e83c4ed769571cf86ea000","tarball":"http://registry.npmjs.org/we-plugin-user/-/we-plugin-user-0.2.15.tgz"},"_from":".","_npmVersion":"1.4.3","_npmUser":{"name":"saviogl","email":"saviogl@gmail.com"},"maintainers":[{"name":"albertosouza","email":"contato@albertosouza.net"},{"name":"saviogl","email":"saviogl@gmail.com"}]}
+43 error new={"name":"we-plugin-user","description":"We.js user plugin","version":"0.2.15","dependencies":{"async":"^0.9.0","bcrypt":"^0.8.0","lodash":"^2.4.1","sget":"^0.1.5","we-helpers":">=0.0.7"},"main":"lib/index.js","scripts":{"lint":"jshint .","checkStyle":"jscs .","pretest":"npm run-script lint && npm run-script checkStyle","test":"istanbul cover ./node_modules/.bin/_mocha test","posttest":"istanbul check-coverage && rm -rf coverage","prepublish":"npm prune"},"publishConfig":{"registry":"http://registry.npmjs.org"},"author":{"name":"Alberto Souza","email":"alberto.souza.dev@gmail.com"},"license":"ISC","devDependencies":{"mocha":"^1.18.2","istanbul":"^0.2.7","jshint":"^2.5.0","jscs":"^1.4.5"},"repository":{"type":"git","url":"git@github.com:wejs/we-plugin-user.git"},"sails":{"isHook":true},"readme":"# We.js User plugin\u000a\u000a[![Dependency Status](https://david-dm.org/wejs/we-plugin-user.png)](https://david-dm.org/wejs/we-plugin-user)\u000a\u000a> Flag everything!\u000a\u000a## API:\u000aTODO\u000a\u000a## Sails.js resources:\u000a\u000a - Avatar Controller\u000a - User Controller\u000a - User Model\u000a\u000a## Avaible URLS:\u000aTODO\u000a\u000a#### NPM Info:\u000a[![NPM](https://nodei.co/npm/we-plugin-user.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/we-plugin-user/)\u000a\u000a## Copyright and license\u000a\u000aCopyright 2013-2014 Alberto Souza <alberto.souza.dev@gmail.com> and contributors , under [the MIT license](LICENSE).\u000a","readmeFilename":"README.md","gitHead":"ef65e953c559f6c2dcd8a7c711b344e8df94ae0b","bugs":{"url":"https://github.com/wejs/we-plugin-user/issues"},"homepage":"https://github.com/wejs/we-plugin-user","_id":"we-plugin-user@0.2.15","_shasum":"7ccb135952b59a08eced936dc969703ef9ddc680","_from":".","_npmVersion":"1.4.28","_npmUser":{"name":"albertosouza","email":"contato@albertosouza.net"},"maintainers":[{"name":"albertosouza","email":"contato@albertosouza.net"}],"dist":{"shasum":"7ccb135952b59a08eced936dc969703ef9ddc680","tarball":"http://registry.npmjs.org/we-plugin-user/-/we-plugin-user-0.2.15.tgz"}}: we-plugin-user
+43 error     at RegClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:308:14)
+43 error     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:246:65)
+43 error     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:236:22)
+43 error     at Request.emit (events.js:98:17)
+43 error     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1142:14)
+43 error     at Request.emit (events.js:117:20)
+43 error     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1096:12)
+43 error     at IncomingMessage.emit (events.js:117:20)
+43 error     at _stream_readable.js:944:16
+43 error     at process._tickCallback (node.js:442:13)
+44 error If you need help, you may report this *entire* log,
+44 error including the npm and node versions, at:
+44 error     <http://github.com/npm/npm/issues>
+45 error System Linux 3.13.0-32-generic
+46 error command "/usr/bin/node" "/usr/bin/npm" "publish"
+47 error cwd /home/a/projetos/plugins/we-plugin-user
+48 error node -v v0.10.36
+49 error npm -v 1.4.28
+50 verbose exit [ 1, true ]
