@@ -105,8 +105,6 @@ App.WeAvatarModalComponent = Ember.Component.extend({
         data.avatar = storeImage;
         // set current user avatarId
         App.currentUser.set('avatar', storeImage);
-        // update user in store
-        self.store.push('user', data.user);
         // close modal
         self.send('close');
         // triger event change modal
