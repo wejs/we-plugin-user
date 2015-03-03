@@ -1,7 +1,7 @@
-{{we-title title="Usuários"}}
+<h2>{{t "admin.user.title"}}</h2>
 
 <div class="container-fluid">
-  {{we-user-search weUserSearchSelected="weUserSearchSelected" weUserSearchClass="weUserSearch" weSearchField="email" delegate=controller addEmail="true"}}
+  {{we-user-search weUserSearchSelected="weUserSearchSelected" weUserSearchClass="weUserSearch" weSearchField="email" delegate=controller addEmail="true" placeholder="Digite um email..."}}
   <small class="btn btn-primary" data-toggle="modal" data-target="#we-oauth-search">Buscar CPF</small>
 </div>
 
