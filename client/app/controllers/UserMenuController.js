@@ -15,10 +15,10 @@
       var host = this.get('drupalHost');
 
       this.setProperties({
-        messages: host + '/user/',
-        friends: host + '/user/',
-        notification: host + '/user/',
-        notes: host + '/user/'
+        messages: host + '/user_messages',
+        friends: host + '/user_friends',
+        notification: host + '/user_mail_notify',
+        notes: host + '/user_myresults'
       });
 
     }.observes('drupalHost').on('init'),
