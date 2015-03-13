@@ -239,7 +239,7 @@ module.exports = {
 
     Role.getUsers(roles, function (err, users){
       if ( err ) return res.serverError('findUserByRole:: error trying to retrieve users', err);
-      if ( !users ) return res.notFound('No user were found with that matches roles: ', roles);
+      if ( !users || !users.length ) return res.notFound('No user were found with that matches roles: ', roles);
       res.ok(users);
     });
   } 

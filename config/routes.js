@@ -47,5 +47,5 @@ module.exports.routes = {
     controller    : 'UserController',
     action        : 'findUserByRole',
     model         : 'user'
-  },  
+  }  
 }
