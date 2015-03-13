@@ -227,5 +227,20 @@ module.exports = {
 
   // block add and remove routes
   add: function(req, res) { return res.notFound(); },
-  remove: function(req, res) { return res.notFound(); }
+  remove: function(req, res) { return res.notFound(); },
+
+  findUserByRole: function (req, res, next){
+    var roles = req.param('roles');
+    if ( !roles ) return res.badRequest('findUserByRole:: Missing parameter -> `roles`');
+
+    if ( _.isString(roles) ){
+      roles = [roles];
+    }
+
+    Role.getUsers(roles, function (err, users){
+      if ( err ) return res.serverError('findUserByRole:: error trying to retrieve users', err);
+      if ( !users ) return res.notFound('No user were found with that matches roles: ', roles);
+      res.ok(users);
+    });
+  } 
 };

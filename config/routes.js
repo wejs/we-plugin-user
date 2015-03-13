@@ -41,5 +41,11 @@ module.exports.routes = {
   'post /api/v1/user/:id/avatar': {
     controller    : 'AvatarController',
     action        : 'changeAvatar'
-  }
+  },
+
+  'get /user/role': {
+    controller    : 'UserController',
+    action        : 'findUserByRole',
+    model         : 'user'
+  },  
 }
