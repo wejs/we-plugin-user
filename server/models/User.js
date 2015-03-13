@@ -6,6 +6,7 @@
  *
  */
 var bcrypt = require('bcrypt');
+var async = require('async');
 
 module.exports = {
   schema: true,
@@ -239,5 +240,27 @@ module.exports = {
       return false;
     }
     return true
+  },
+
+  /**
+   * Add a role to an user 
+   * @param  {Array} Array of users id
+   * @param  {Object || Integer} Role to add user(s) 
+   * @param  {Function} cb
+   */
+  addRole: function (users, role, cb){
+    User.find(users)
+    .exec(function (err, u){
+      if ( err ) return cb(err);
+      if ( !u || !u.length) return cb('User::addRole: No user was found for this array -> ', users);
+
+      async.each(u, function (oneUser, callback){
+        oneUser.roles.add(role);
+        oneUser.save(callback);
+      }, function (err){
+        if ( err ) return cb('User::addRole: Some error processing each async user. error: ', err);
+        cb();
+      });
+    });
   }
 };
