@@ -47,5 +47,11 @@ module.exports.routes = {
     controller    : 'UserController',
     action        : 'findUserByRole',
     model         : 'user'
-  }  
+  },
+
+  'put /api/v1/admin/user/:id': {
+    controller    : 'UserController',
+    action        : 'adminUserUpdate',
+    model         : 'user' 
+  }
 }

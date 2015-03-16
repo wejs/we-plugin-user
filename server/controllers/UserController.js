@@ -239,8 +239,87 @@ module.exports = {
 
     Role.getUsers(roles, function (err, users){
       if ( err ) return res.serverError('findUserByRole:: error trying to retrieve users', err);
-      if ( !users || !users.length ) return res.notFound('No user were found with that matches roles: ', roles);
+      // if ( !users || !users.length ) return res.notFound('No user were found with that matches roles: ', roles);
       res.ok(users);
     });
-  } 
+  },
+
+  adminUserUpdate: function (req, res, next){
+    if(!req.isAuthenticated()) return res.forbidden();
+    if( !req.user || !req.user.isAdmin) return res.forbidden();
+
+    var sails = req._sails;
+    // Look up the model
+    var Model = sails.models.user;
+    var pk = req.param('id');
+
+    // Create `values` object (monolithic combination of all parameters)
+    // But omit the blacklisted params (like JSONP callback param, etc.)
+    var values = actionUtil.parseValues(req);
+
+    // Omit the path parameter `id` from values, unless it was explicitly defined
+    // elsewhere (body/query):
+    var idParamExplicitlyIncluded = ((req.body && req.body.id) || req.query.id);
+    if (!idParamExplicitlyIncluded) delete values.id;
+
+    // remove createdAt and updatedAt to let sails.js set it automaticaly
+    delete values.createdAt;
+    delete values.updatedAt;
+
+    return Model.findOneByUsername(values.username).exec(function(err, usr){
+      if (err) {
+        sails.log.error('Error on find user by username.',err);
+        res.locals.messages = [{
+          status: 'danger',
+          message: res.i18n('auth.register.error.unknow', { username: values.username })
+        }];
+        return res.serverError({}, 'auth/register');
+      }
+
+      // user already registered
+      if (usr && (usr.id != pk) ) {
+        res.locals.messages = [{
+          status: 'danger',
+          message: res.i18n('auth.register.error.username.registered', { username: values.username })
+        }];
+        return res.badRequest({}, 'auth/register');
+      }
+
+      // Find and update the targeted record.
+      //
+      // (Note: this could be achieved in a single query, but a separate `findOne`
+      //  is used first to provide a better experience for front-end developers
+      //  integrating with the blueprint API.)
+      return Model.findOne(pk).exec(function found(err, matchingRecord) {
+
+        if ( err ) return res.serverError(err);
+        if ( !matchingRecord ) return res.notFound();
+
+        return Model.update(pk, values).exec(function updated(err, records) {
+          // Differentiate between waterline-originated validation errors
+          // and serious underlying issues. Respond with badRequest if a
+          // validation error is encountered, w/ validation info.
+          if (err) {
+            sails.log.error('Error on update user', err);
+            return res.negotiate(err);
+          }
+
+          // Because this should only update a single record and update
+          // returns an array, just use the first item.  If more than one
+          // record was returned, something is amiss.
+          if (!records || !records.length || records.length > 1) {
+            req._sails.log.warn(
+            util.format('Unexpected output from `%s.update`.', Model.globalId)
+            );
+          }
+
+          var updatedRecord = records[0];
+          updatedRecord.req = req;
+
+          return res.ok(updatedRecord);
+
+        });// </updated>
+      }); // </found>
+    });
+  }
 };
