@@ -166,7 +166,9 @@ module.exports = {
       // (Note: this could be achieved in a single query, but a separate `findOne`
       //  is used first to provide a better experience for front-end developers
       //  integrating with the blueprint API.)
-      return Model.findOne(pk).exec(function found(err, matchingRecord) {
+      return Model.findOne(pk)
+            .populate('roles')
+            .exec(function found(err, matchingRecord) {
 
         if (err) return res.serverError(err);
         if (!matchingRecord) return res.notFound();
@@ -230,7 +232,7 @@ module.exports = {
   remove: function(req, res) { return res.notFound(); },
 
   findUserByRole: function (req, res, next){
-    var roles = req.param('roles');
+    var roles = req.param('role');
     if ( !roles ) return res.badRequest('findUserByRole:: Missing parameter -> `roles`');
 
     if ( _.isString(roles) ){
@@ -239,8 +241,16 @@ module.exports = {
 
     Role.getUsers(roles, function (err, users){
       if ( err ) return res.serverError('findUserByRole:: error trying to retrieve users', err);
-      // if ( !users || !users.length ) return res.notFound('No user were found with that matches roles: ', roles);
-      res.ok(users);
+
+      User.findById(_.pluck(users, 'id'))
+      .populateAll()
+      .exec(function (err, populatedUsers){
+        if ( err ) return res.serverError('findUserByRole:: error trying to populate users field', err);      
+        res.ok( populatedUsers.map(function (user){ 
+          user.req = req; 
+          return user;
+        }));
+      })
     });
   },
 
