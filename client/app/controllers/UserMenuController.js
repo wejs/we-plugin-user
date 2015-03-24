@@ -28,8 +28,14 @@
     }.property('App.currentUser'),
 
     adminMenu: function (){
-      if (this.get('currentUser.isAdmin') || this.get('currentUser.isModerator')) return true;
-      return false;
+      var links = Ember.get(App, 'configs.client.publicVars.menus.admin.links' );
+      links = links.reduce(function (prev, curr){
+        return prev.concat(curr.roles);
+      }, []);
+      var linksUnique = _.uniq(links);
+      var currentUserRoles = Permissions.currentUserRolesWithProp('name');
+      var intersection = _.intersection(currentUserRoles, linksUnique);
+      return intersection.length;
     }.property('currentUser'),
 
     init: function() {
