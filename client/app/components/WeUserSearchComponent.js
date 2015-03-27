@@ -48,20 +48,8 @@ App.WeUserSearchComponent = Ember.Component.extend({
             url: self.get('url'),
             dataType: 'json',
             quietMillis: 250,
-            data: function (term, page) {
-              var limit = 30;
-              var skip = ( page - 1 ) * limit;
-              var helper = {};
-              helper[self.get('weSearchField')] = {}
-              helper[self.get('weSearchField')].contains = term;
-
-              var query = {
-                where: JSON.stringify(helper),
-                limit: limit,
-                skip: skip
-              };          
-
-              return query;
+            data: function (term, page) {      
+              return self.setUpQuery(term, page);
             },
             results: function (data, page) { // parse the results into the format expected by Select2.
               // since we are using custom formatting functions we do not need to alter remote JSON data
@@ -108,6 +96,35 @@ App.WeUserSearchComponent = Ember.Component.extend({
 
     formatUserSelection: function(user) {
         return '@' + user.username;
+    },
+
+    setUpQuery: function(term, page){
+      var self = this;
+
+      var limit = 30;
+      var skip = ( page - 1 ) * limit;
+
+      var helper = {};
+
+      if ( !_.isArray(self.get('weSearchField')) ) {
+        helper[self.get('weSearchField')] = {}
+        helper[self.get('weSearchField')].contains = term;
+      } else {
+        helper.or = [];
+        self.get('weSearchField').forEach(function (field, i, arr){
+          helper.or[i] = {}; 
+          helper.or[i][field] = {};
+          helper.or[i][field].contains = term;
+        });
+      }
+
+      var query = {
+        where: JSON.stringify(helper),
+        limit: limit,
+        skip: skip
+      };    
+
+      return query;   
     },
 
     open: function (){
