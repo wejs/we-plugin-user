@@ -14,11 +14,12 @@ App.UserAvatarComponent = Ember.Component.extend({
 
   // default configs
   width: '100%',
-  attributeBindings: ['src','width', 'data-lightbox'],
+  attributeBindings: ['src','width', 'data-lightbox', 'dataToggle:data-toggle', 'dataPlacement:data-placement', 'title'],
   webp: 'auto',
   // medium | thumbnail | original | large
   size: 'medium',
   classNames: ['thumbnail'],
+  classNameBindings: ['clickClass'],
   defaultSrc: '/core/images/avatars/user-avatar.png',
   src: null,
   url: null,
