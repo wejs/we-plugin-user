@@ -11,18 +11,6 @@
 
     }.observes('accountsHost').on('init'),
 
-    drupalLinks: function () {
-      var host = this.get('drupalHost');
-
-      this.setProperties({
-        messages: host + '/user_messages',
-        friends: host + '/user_friends',
-        notification: host + '/user_mail_notify',
-        notes: host + '/user_myresults'
-      });
-
-    }.observes('drupalHost').on('init'),
-
     currentUser: function () {
       return App.get('currentUser');
     }.property('App.currentUser'),
@@ -43,8 +31,7 @@
       if(App.currentUser.id){
         self.set('isVisible', true);
       }
-      // Set drupal host for menu
-      self.set('drupalHost', we.configs.client.publicVars.drupal);
+
       self.set('accountsHost', we.configs.server.providers.accounts);
 
       we.hooks.on("user-authenticated",function(user, done){
