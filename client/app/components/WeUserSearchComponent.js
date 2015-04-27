@@ -13,6 +13,7 @@ App.WeUserSearchComponent = Ember.Component.extend({
     url: '/user',
     multiple: false,
     addEmail: false,
+    currentUser: null,
 
     // Expose component to delegate's controller
     init: function() {
@@ -21,7 +22,7 @@ App.WeUserSearchComponent = Ember.Component.extend({
        if (this.get('delegate')) {
           this.get('delegate').set(this.get('property') || 'WeUserSearch', this);
        }
-    },    
+    },
 
     didInsertElement: function() {
         var self = this;
@@ -48,12 +49,19 @@ App.WeUserSearchComponent = Ember.Component.extend({
             url: self.get('url'),
             dataType: 'json',
             quietMillis: 250,
-            data: function (term, page) {      
+            data: function (term, page) {
               return self.setUpQuery(term, page);
             },
             results: function (data, page) { // parse the results into the format expected by Select2.
               // since we are using custom formatting functions we do not need to alter remote JSON data
               var more = data.user.length > 0;
+
+              if ( self.currentUser ) {
+                return {
+                  results: data.user.filter( function ( user ){ return user.id !== Number( self.currentUser.id ) } ),
+                  more: more
+                };
+              }
 
               return {
                 results: data.user,
@@ -79,11 +87,11 @@ App.WeUserSearchComponent = Ember.Component.extend({
     formatUserResult: function(user) {
       var size = '44px';
       if(this.get('addEmail')) size = '60px';
-      
+
       var markup = '<div class="container-fluid">' +
            '<div class="row">' +
-           '<div class="col-sm-3 text-center"><img style="width: ' + size + '; height: ' + size + '" src="/avatar/' + user.avatar + '" /></div>' +           
-           '<div class="col-sm-9">' + 
+           '<div class="col-sm-3 text-center"><img style="width: ' + size + '; height: ' + size + '" src="/avatar/' + user.avatar + '" /></div>' +
+           '<div class="col-sm-9">' +
               '<div>@' + user.username + '</div>' +
               '<div>' + user.displayName + '</div>';
 
@@ -112,7 +120,7 @@ App.WeUserSearchComponent = Ember.Component.extend({
       } else {
         helper.or = [];
         self.get('weSearchField').forEach(function (field, i, arr){
-          helper.or[i] = {}; 
+          helper.or[i] = {};
           helper.or[i][field] = {};
           helper.or[i][field].contains = term;
         });
@@ -122,9 +130,9 @@ App.WeUserSearchComponent = Ember.Component.extend({
         where: JSON.stringify(helper),
         limit: limit,
         skip: skip
-      };    
+      };
 
-      return query;   
+      return query;
     },
 
     open: function (){
