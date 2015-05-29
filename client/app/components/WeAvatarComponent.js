@@ -9,7 +9,7 @@
     width: 35,
     host: null,
     avatarUrl: null,
-    defaultAvatarUrl: '/imgs/avatars/user-avatar.png',
+    defaultAvatarUrl: '/core/images/avatars/user-avatar.png',
     attributeBindings: [
       'heigth', 'width','userId', 'avatarUrl:src'
     ],

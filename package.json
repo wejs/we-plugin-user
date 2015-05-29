@@ -1,11 +1,11 @@
 {
   "name": "we-plugin-user",
   "description": "We.js user plugin",
-  "version": "0.2.20",
+  "version": "0.2.21",
   "dependencies": {
-    "async": "^0.9.0",
-    "bcrypt": "^0.8.0",
-    "lodash": "^2.4.1",
+    "async": "^1.0.0",
+    "bcrypt": "^0.8.3",
+    "lodash": "^3.9.3",
     "sget": "^0.1.5",
     "we-helpers": ">=0.0.7"
   },
@@ -22,13 +22,8 @@
     "registry": "http://registry.npmjs.org"
   },
   "author": "Alberto Souza <alberto.souza.dev@gmail.com>",
-  "license": "ISC",
-  "devDependencies": {
-    "mocha": "^1.18.2",
-    "istanbul": "^0.2.7",
-    "jshint": "^2.5.0",
-    "jscs": "^1.4.5"
-  },
+  "license": "MIT",
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git@github.com:wejs/we-plugin-user.git"

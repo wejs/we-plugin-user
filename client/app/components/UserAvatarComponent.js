@@ -18,7 +18,6 @@ App.UserAvatarComponent = Ember.Component.extend({
   webp: 'auto',
   // medium | thumbnail | original | large
   size: 'medium',
-  classNames: ['thumbnail'],
   classNameBindings: ['clickClass'],
   defaultSrc: '/core/images/avatars/user-avatar.png',
   src: null,
