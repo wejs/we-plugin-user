@@ -1,7 +1,7 @@
 {
   "name": "we-plugin-user",
   "description": "We.js user plugin",
-  "version": "0.2.21",
+  "version": "0.2.22",
   "dependencies": {
     "async": "^1.0.0",
     "bcrypt": "^0.8.3",
