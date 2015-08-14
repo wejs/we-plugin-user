@@ -28,6 +28,16 @@ App.WeAvatarModalComponent = Ember.Component.extend({
   },
   willDestroyElement: function(){
     we.events.off('showAvatarChangeModal',this.onShowAvatarChangeModal);
+    $('#avatarChangeModal').off('hidden.bs.modal');
+  },
+
+  didInsertElement: function (){
+    this._super();
+    var self = this;
+    $('#avatarChangeModal').on('hidden.bs.modal', function (e) {
+      // do something...
+      self.set('imageSelected', false);
+    })
   },
 
   hideAction: function (){
