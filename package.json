@@ -17,7 +17,7 @@
     "we-plugin-form": "wejs/we-plugin-form",
     "we-test-tools": "wejs/we-test-tools"
   },
-  "repository": "wejs/we-plugin-user.git",
+  "repository": "wejs/we-plugin-user",
   "author": "Alberto Souza <contato@albertosouza.net>",
   "license": "MIT"
 }
