@@ -21,11 +21,6 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
   });
 
   plugin.setRoutes({
-    'get /account': {
-      'controller': 'auth',
-      'action': 'current',
-      'model': 'user'
-    },
     'get /user/:userId([0-9]+)/edit/privacity': {
       'name'          : 'user.privacity',
       'controller'    : 'user',

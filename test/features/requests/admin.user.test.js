@@ -14,7 +14,7 @@ describe('adminUserFeature', function () {
 
     // after all create one user
     request(http)
-    .post('/admin/user/create')
+    .post('/admin/user')
     .set('Accept', 'application/json')
     .expect(201)
     .send( stubs.userStub() )
@@ -41,12 +41,12 @@ describe('adminUserFeature', function () {
   });
 
   describe('create', function () {
-    it('post /admin/user/create should create one user record', function (done) {
+    it('post /admin/user should create one user record', function (done) {
       this.slow(300);
       var userStub = stubs.userStub();
 
       request(http)
-      .post('/admin/user/create')
+      .post('/admin/user')
       .set('Accept', 'application/json')
       .send(userStub)
       .end(function (err, res) {

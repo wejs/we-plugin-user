@@ -51,7 +51,7 @@ module.exports = {
     if (!res.locals.template)
       res.locals.template = res.locals.model + '/' + 'edit';
 
-    if (!we.acl.canStatic('manage_users', req.userRoleNames)) {
+    if ( !we.acl || !we.acl.canStatic('manage_users', req.userRoleNames)) {
       delete req.body.email;
       delete req.body.active;
       delete req.body.roles;
@@ -76,6 +76,7 @@ module.exports = {
     if (!res.locals.user) return res.notFound();
 
     if (
+      !req.isAuthenticated ||
       !req.isAuthenticated() ||
       !(
         res.locals.user.id == req.user.id ||

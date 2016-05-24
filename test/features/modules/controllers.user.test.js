@@ -52,7 +52,8 @@ describe('controllers.user', function () {
 
   describe('controllers.user.create', function () {
     it('create action should run res.ok if req.method!=POST', function (done) {
-      var req = { we: we,
+      var req = {
+        we: we,
         query: {
           something: 'something'
         },
@@ -68,13 +69,12 @@ describe('controllers.user', function () {
 
   describe('controllers.user.edit', function () {
     it('edit action should run res.ok if req.method!=POST', function (done) {
-      we.config.acl.disabled = false;
       var req = { we: we,
         userRoleNames: [ 'administrator'],
-        params: {}
+        params: {},
+        body: {}
       };
       var res = { locals: {}, ok: function() {
-        we.config.acl.disabled = true;
         done();
       }};
       controller.edit(req, res);

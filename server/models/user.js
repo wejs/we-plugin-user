@@ -176,7 +176,7 @@ module.exports = function UserModel(we) {
           .then(function findUser(record) {
              res.locals.data = record;
 
-            if (record && record.id && req.isAuthenticated()) {
+            if (record && record.id && req.isAuthenticated && req.isAuthenticated()) {
               // ser role owner
               if (req.user.id == record.id)
                 if(req.userRoleNames.indexOf('owner') == -1 ) req.userRoleNames.push('owner');
