@@ -1,14 +1,27 @@
-# we-plugin-user
+# we-plugin-user :family:
 
-> [write something about your plugin here]
+[![npm version](https://badge.fury.io/js/we-plugin-user.svg)](https://badge.fury.io/js/we-plugin-user) [![Build Status](https://travis-ci.org/wejs/we-plugin-user.svg?branch=master)](https://travis-ci.org/wejs/we-plugin-user) [![Coverage Status](https://coveralls.io/repos/github/wejs/we-plugin-user/badge.svg?branch=master)](https://coveralls.io/github/wejs/we-plugin-user?branch=master)
 
-# API
+We.js plugin with user resource and routes
 
+## Requirements
+
+- we-core
+
+## Installation
+
+```sh
+npm install --save we-plugin-user
+```
 
 ## Links
 
-> * We.js site: http://wejs.org
+- We.js site: http://wejs.org
 
-#Copyright and license
+## NPM Info:
 
-Copyright 2013-2015 [your name] <[your email@email]> and contributors , under [the MIT license](LICENSE).
+[![NPM](https://nodei.co/npm/we-plugin-user.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/we-plugin-user/)
+
+## License
+
+Under [the MIT license](https://github.com/wejs/we/blob/master/LICENSE.md).

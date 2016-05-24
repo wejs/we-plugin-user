@@ -1,16 +1,17 @@
 {
   "name": "we-plugin-user",
-  "description": "We.js user plugin",
+  "description": "We.js user resource and routes",
   "version": "1.0.0",
-  "main": "lib/index.js",
+  "main": "plugin.js",
   "scripts": {
     "test": "NODE_ENV=test LOG_LV=info ./node_modules/.bin/mocha test/bootstrap.js test/**/*.test.js",
-    "prepublish": "npm prune"
+    "coverage": "NODE_ENV=test LOG_LV=info node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -u exports -R spec test/bootstrap.js test/**/*.test.js"
   },
   "dependencies": {},
   "devDependencies": {
     "express-mysql-session": "^1.0.0",
     "fs-extra": "^0.18.2",
+    "istanbul": "^0.4.3",
     "mocha": "^2.2.5",
     "mysql": "^2.10.2",
     "rimraf": "^2.3.4",
@@ -19,6 +20,20 @@
     "we-plugin-form": "wejs/we-plugin-form",
     "we-test-tools": "wejs/we-test-tools"
   },
+  "keywords": [
+    "we.js",
+    "plugin",
+    "user"
+  ],
+  "files": [
+    "files",
+    "lib",
+    "locales",
+    "server",
+    "cron.js",
+    "install.js",
+    "plugin.js"
+  ],
   "repository": "wejs/we-plugin-user",
   "author": "Alberto Souza <contato@albertosouza.net>",
   "license": "MIT"
