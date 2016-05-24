@@ -1,4 +1,4 @@
-# we-plugin-user :family:
+# We.js user plugin :family:
 
 [![npm version](https://badge.fury.io/js/we-plugin-user.svg)](https://badge.fury.io/js/we-plugin-user) [![Build Status](https://travis-ci.org/wejs/we-plugin-user.svg?branch=master)](https://travis-ci.org/wejs/we-plugin-user) [![Coverage Status](https://coveralls.io/repos/github/wejs/we-plugin-user/badge.svg?branch=master)](https://coveralls.io/github/wejs/we-plugin-user?branch=master)
 
