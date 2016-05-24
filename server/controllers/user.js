@@ -131,6 +131,8 @@ module.exports = {
   },
 
   updateUserPrivacity: function updateUserPrivacity(req, res) {
+    if (!res.locals.redirectTo) res.locals.redirectTo = req.url;
+
     // for each field ...
     req.we.utils.async.eachSeries(res.locals.userAttributes,
     function (fieldName, next) {
