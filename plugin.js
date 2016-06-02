@@ -24,7 +24,7 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
     'get /user/:userId([0-9]+)/edit/privacity': {
       'name'          : 'user.privacity',
       'controller'    : 'user',
-      'model'         : 'privacity',
+      'model'         : 'userPrivacity',
       'action'        : 'findUserPrivacity',
       'titleHandler'  : 'i18n',
       'titleI18n'     : 'Privacity',
@@ -34,7 +34,7 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
     'post /user/:userId([0-9]+)/edit/privacity': {
       'name'          : 'user.privacity',
       'controller'    : 'user',
-      'model'         : 'privacity',
+      'model'         : 'userPrivacity',
       'action'        : 'findUserPrivacity',
       'titleHandler'  : 'i18n',
       'titleI18n'     : 'Privacity',
