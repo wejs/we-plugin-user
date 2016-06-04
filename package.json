@@ -26,6 +26,7 @@
     "user"
   ],
   "files": [
+    "commands",
     "files",
     "lib",
     "locales",
