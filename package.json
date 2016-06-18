@@ -7,7 +7,6 @@
     "test": "NODE_ENV=test LOG_LV=info ./node_modules/.bin/mocha test/bootstrap.js test/**/*.test.js",
     "coverage": "NODE_ENV=test LOG_LV=info node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -u exports -R spec test/bootstrap.js test/**/*.test.js"
   },
-  "dependencies": {},
   "devDependencies": {
     "express-mysql-session": "^1.0.0",
     "fs-extra": "^0.18.2",
@@ -21,8 +20,7 @@
     "we-test-tools": "wejs/we-test-tools"
   },
   "keywords": [
-    "we.js",
-    "plugin",
+    "wejs-plugin",
     "user"
   ],
   "files": [

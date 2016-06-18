@@ -4,14 +4,10 @@
 
 We.js plugin with user resource and routes
 
-## Requirements
-
-- we-core
-
 ## Installation
 
 ```sh
-npm install --save we-plugin-user
+we i we-plugin-user
 ```
 
 ## Links
