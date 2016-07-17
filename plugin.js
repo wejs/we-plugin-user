@@ -5,7 +5,6 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
   var plugin = new Plugin(__dirname);
 
   plugin.setConfigs({
-    defaultUserAvatar: projectPath + '/node_modules/we-core/files/public/images/avatars/user-avatar.png',
     /**
      * Field privacity settings
      * @type {Object}
