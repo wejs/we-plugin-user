@@ -53,7 +53,14 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
           'parser': 'userSearchQuery',
           'target': {
             'type': 'field',
-            'field': 'id'
+            'field': 'displayName'
+          }
+        },
+        'username': {
+          'parser': 'equal',
+          'target': {
+            'type': 'field',
+            'field': 'username'
           }
         }
       }
