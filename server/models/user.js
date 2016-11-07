@@ -172,17 +172,38 @@ module.exports = function UserModel(we) {
         contextLoader: function contextLoader(req, res, done) {
           if (!res.locals.id || !res.locals.loadCurrentRecord) return done();
 
-          this.findById(res.locals.id)
-          .then(function findUser(record) {
-             res.locals.data = record;
+          if (res.locals.user) {
+            res.locals.data = res.locals.user;
 
-            if (record && record.id && req.isAuthenticated && req.isAuthenticated()) {
+            if (
+              res.locals.data.id &&
+              req.isAuthenticated &&
+              req.isAuthenticated()
+            ) {
               // ser role owner
-              if (req.user.id == record.id)
+              if (req.user.id == res.locals.data.id) {
                 if(req.userRoleNames.indexOf('owner') == -1 ) req.userRoleNames.push('owner');
+              }
             }
-            return done();
-          });
+
+            done();
+          } else {
+            this.findById(res.locals.id)
+            .then(function findUser(record) {
+              res.locals.data = record;
+
+              if (record && record.id && req.isAuthenticated && req.isAuthenticated()) {
+                // ser role owner
+                if (req.user.id == record.id) {
+                  if(req.userRoleNames.indexOf('owner') == -1 ) req.userRoleNames.push('owner');
+                }
+              }
+              done();
+
+              return null;
+            })
+            .catch(done);
+          }
         },
 
         // returns an url alias

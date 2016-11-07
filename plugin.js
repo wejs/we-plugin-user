@@ -107,7 +107,7 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
       if (!/^\d+$/.exec(String(id))) return res.notFound();
       data.we.db.models.user.findById(id)
       .then(function (user) {
-        if (!user) return res.notFound();
+        if (!user) return next();
         res.locals.user = user;
         // set user context if userId is the first param
         if (Object.keys(req.params)[0] == 'userId'){
@@ -115,7 +115,10 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
         }
 
         next();
-      });
+
+        return null;
+      })
+      .catch(next);
     });
   });
 
