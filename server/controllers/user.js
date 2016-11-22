@@ -17,6 +17,26 @@ module.exports = {
     });
   },
 
+  find: function findAll (req, res) {
+    // block email filter
+    if (
+      req.query.email ||
+      (res.locals.query.where && res.locals.query.where.email)
+    ) {
+      return res.badRequest('user.invalid.filter');
+    }
+
+    res.locals.Model
+    .findAndCountAll(res.locals.query)
+    .then(function afterFindAndCount (record) {
+      res.locals.metadata.count = record.count;
+      res.locals.data = record.rows;
+      res.ok();
+      return null;
+    })
+    .catch(res.queryError);
+  },
+
   create: function create(req, res) {
     var we = req.we;
 
