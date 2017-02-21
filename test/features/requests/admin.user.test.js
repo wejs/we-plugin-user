@@ -14,7 +14,7 @@ describe('adminUserFeature', function () {
 
     // after all create one user
     request(http)
-    .post('/admin/user')
+    .post('/user')
     .set('Accept', 'application/json')
     .expect(201)
     .send( stubs.userStub() )
@@ -26,9 +26,9 @@ describe('adminUserFeature', function () {
   });
 
   describe('find', function () {
-    it('get /admin/user route should return users list', function (done) {
+    it('get /user route should return users list', function (done) {
       request(http)
-      .get('/admin/user')
+      .get('/user')
       .set('Accept', 'application/json')
       .end(function (err, res) {
         assert.equal(200, res.status);
@@ -41,12 +41,12 @@ describe('adminUserFeature', function () {
   });
 
   describe('create', function () {
-    it('post /admin/user should create one user record', function (done) {
+    it('post /user should create one user record', function (done) {
       this.slow(300);
       var userStub = stubs.userStub();
 
       request(http)
-      .post('/admin/user')
+      .post('/user')
       .set('Accept', 'application/json')
       .send(userStub)
       .end(function (err, res) {

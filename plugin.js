@@ -67,40 +67,6 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
     }
   });
 
-  plugin.setResource({
-    'namePrefix': 'admin.',
-    'name': 'user',
-    'namespace': '/admin',
-    'templateFolderPrefix': 'admin/',
-    'findAll': {
-      'search': {
-        'id':  {
-          'parser': 'equal',
-          'target': {
-            'type': 'field',
-            'field': 'id'
-          }
-        },
-        'email':  {
-          'parser': 'equal',
-          'target': {
-            'type': 'field',
-            'model': 'user',
-            'field': 'email'
-          }
-        },
-        'fullName':  {
-          'parser': 'contains',
-          'target': {
-            'type': 'field',
-            'model': 'user',
-            'field': 'fullName'
-          }
-        }
-      }
-    }
-  });
-
   plugin.events.on('we:express:set:params', function(data) {
     // user pre-loader
     data.express.param('userId', function (req, res, next, id) {
