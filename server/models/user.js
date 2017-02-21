@@ -1,33 +1,38 @@
 /**
- * User
+ * User model
  *
  * @module      :: Model
- * @description :: System User model
- *
  */
 
-var userNameRegex = /^[A-Za-z0-9_-]{2,30}$/;
+const userNameRegex = /^[A-Za-z0-9_-]{2,30}$/;
 
 module.exports = function UserModel(we) {
-  var model = {
+  const model = {
     definition: {
       username: {
         type: we.db.Sequelize.STRING,
         unique: true,
         validate: {
-          userNameIsValid: function(val) {
+          userNameIsValid(val) {
             if (!userNameRegex.test(val)) {
               throw new Error('user.username.invalid');
             }
           },
-          uniqueUsername: function(val, cb) {
+          uniqueUsername(val, cb) {
             if(!val) return cb();
             return we.db.models.user.findOne({
               where: { username: val }, attributes: ['id']
-            }).then(function (u) {
-              if (u) return cb('auth.register.error.username.registered');
-              cb();
-            });
+            })
+            .then( (u)=> {
+              if (u) {
+                cb('auth.register.error.username.registered');
+              } else {
+                cb();
+              }
+
+              return null;
+            })
+            .catch(cb);
           }
         }
       },
@@ -55,27 +60,31 @@ module.exports = function UserModel(we) {
         formFieldType: 'user-email',
         validate: {
           isEmail: true,
-          notEmptyOnCreate: function(val) {
+          notEmptyOnCreate(val) {
             if (this.isNewRecord) {
               if (!val) {
                 throw new Error('auth.register.email.required');
               }
             }
           },
-          equalEmailFields: function(val) {
+          equalEmailFields(val) {
             if (this.isNewRecord) {
               if (this.getDataValue('email') != val) {
                 throw new Error('auth.email.and.confirmEmail.diferent');
               }
             }
           },
-          uniqueEmail: function(val, cb) {
-            return we.db.models.user.findOne({
+          uniqueEmail(val, cb) {
+            return we.db.models.user
+            .findOne({
               where: { email: val }, attributes: ['id']
-            }).then(function (u) {
+            })
+            .then( (u)=> {
               if (u) return cb('auth.register.email.exists');
               cb();
-            });
+              return null;
+            })
+            .catch(cb);
           }
         }
       },
@@ -97,19 +106,19 @@ module.exports = function UserModel(we) {
       confirmEmail: {
         type: we.db.Sequelize.VIRTUAL,
         formFieldType: null,
-        set: function (val) {
+        set(val) {
           this.setDataValue('confirmEmail', val);
         },
         validate: {
           isEmail: true,
-          notEmptyOnCreate: function(val) {
+          notEmptyOnCreate(val) {
             if (this.isNewRecord) {
               if (!val) {
                 throw new Error('auth.register.confirmEmail.required');
               }
             }
           },
-          equalEmailFields: function(val) {
+          equalEmailFields(val) {
             if (this.isNewRecord) {
               if (this.getDataValue('email') != val) {
                 throw new Error('auth.email.and.confirmEmail.diferent');
@@ -146,8 +155,8 @@ module.exports = function UserModel(we) {
       comment: 'We.js users table',
 
       classMethods: {
-        validUsername: function(username){
-          var restrictedUsernames = [
+        validUsername(username){
+          const restrictedUsernames = [
             'logout',
             'login',
             'auth',
@@ -160,7 +169,7 @@ module.exports = function UserModel(we) {
           if (restrictedUsernames.indexOf(username) >= 0) {
             return false;
           }
-          return true
+          return true;
         },
         /**
          * Context loader, preload current request record and related data
@@ -169,7 +178,7 @@ module.exports = function UserModel(we) {
          * @param  {Object}   res  express.js response
          * @param  {Function} done callback
          */
-        contextLoader: function contextLoader(req, res, done) {
+        contextLoader(req, res, done) {
           if (!res.locals.id || !res.locals.loadCurrentRecord) return done();
 
           if (res.locals.user) {
@@ -207,27 +216,31 @@ module.exports = function UserModel(we) {
         },
 
         // returns an url alias
-        urlAlias: function urlAlias(record) {
+        urlAlias(record) {
           return {
             alias: '/'+ we.i18n.__('user') +'/' + record.id + '-'+  we.utils
               .string( record.username || record.displayName ).slugify().s,
             target: '/user/' + record.id,
-          }
+          };
         },
 
-        loadPrivacity: function loadPrivacity(record, done) {
-          we.db.models.userPrivacity.findAll({
+        loadPrivacity(record, done) {
+          we.db.models.userPrivacity
+          .findAll({
             where: { userId: record.id },
             raw: true
-          }).then(function (p) {
+          })
+          .then( (p)=> {
             record.privacity = p;
             done();
-          }).catch(done);
+            return null;
+          })
+          .catch(done);
         }
       },
       instanceMethods: {
-        toJSON: function toJSON() {
-          var obj = this.get();
+        toJSON() {
+          const obj = this.get();
 
           // delete and hide user email
           delete obj.email;
@@ -240,7 +253,7 @@ module.exports = function UserModel(we) {
         }
       },
       hooks: {
-        beforeValidate: function beforeValidate(user, options, next) {
+        beforeValidate(user, options, next) {
           if (user.isNewRecord) {
             // dont set password on create
             user.dataValues.password = null;
@@ -249,7 +262,7 @@ module.exports = function UserModel(we) {
           next(null, user);
         },
         // Lifecycle Callbacks
-        beforeCreate: function beforeCreate(user, options, next) {
+        beforeCreate(user, options, next) {
           // set default displayName as username
           if (!user.displayName) {
             if (user.fullName && user.fullName.trim()) {
@@ -266,7 +279,7 @@ module.exports = function UserModel(we) {
           delete user.isModerator;
           next(null, user);
         },
-        beforeUpdate: function beforeUpdate(user, options, next) {
+        beforeUpdate(user, options, next) {
           // set default displayName as username
           if (!user.displayName) {
             if (user.fullName && user.fullName.trim()) {
@@ -281,12 +294,12 @@ module.exports = function UserModel(we) {
           return next(null, user);
         },
 
-        afterFind: function afterFind(record, options, next) {
+        afterFind(record, options, next) {
           if (!record) return next();
 
           // load privacity to hide user fields in toJSON
           if (we.utils._.isArray(record)) {
-            we.utils.async.eachSeries(record, function (r, next) {
+            we.utils.async.eachSeries(record, (r, next)=> {
               we.db.models.user.loadPrivacity(r, next);
             }, next);
           } else {

@@ -4,7 +4,7 @@ var helpers = require('we-test-tools').helpers;
 var stubs = require('we-test-tools').stubs;
 var _, we, http;
 
-describe('adminUserFeature', function () {
+describe('userFeature', function () {
   var salvedUser;
 
   before(function (done) {

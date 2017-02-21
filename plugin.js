@@ -1,8 +1,9 @@
 /**
- * User main file
+ * User plugin main file
  */
+
 module.exports = function loadUserPlugin(projectPath, Plugin) {
-  var plugin = new Plugin(__dirname);
+  const plugin = new Plugin(__dirname);
 
   plugin.setConfigs({
     /**
@@ -72,12 +73,13 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
     data.express.param('userId', function (req, res, next, id) {
       if (!/^\d+$/.exec(String(id))) return res.notFound();
       data.we.db.models.user.findById(id)
-      .then(function (user) {
-        if (!user) return next();
-        res.locals.user = user;
-        // set user context if userId is the first param
-        if (Object.keys(req.params)[0] == 'userId'){
-          res.locals.widgetContext = 'user-' + id;
+      .then( (user)=> {
+        if (user) {
+          res.locals.user = user;
+          // set user context if userId is the first param
+          if (Object.keys(req.params)[0] == 'userId'){
+            res.locals.widgetContext = 'user-' + id;
+          }
         }
 
         next();

@@ -7,7 +7,7 @@
  */
 
 module.exports = function (we) {
-  var model = {
+  return {
     definition: {
       field: {
         type: we.db.Sequelize.STRING,
@@ -25,6 +25,4 @@ module.exports = function (we) {
       user: { type: 'belongsTo', model: 'user' }
     }
   };
-
-  return model;
 };

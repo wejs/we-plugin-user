@@ -6,18 +6,23 @@
  */
 
 module.exports = {
-  findOneByUsername: function findOneByUsername (req, res, next) {
+  findOneByUsername(req, res, next) {
     if(!req.params.username) return next();
 
-    res.locals.Model.findOne({
-      where: { username: req.params.username }
-    }).then(function (user) {
+    res.locals.Model
+    .findOne({
+      where: {
+        username: req.params.username
+      }
+    })
+    .then( (user)=> {
       if(!user) return next();
       return res.ok(user);
-    });
+    })
+    .catch(res.queryError);
   },
 
-  find: function findAll (req, res) {
+  find(req, res) {
     // block email filter
     if (
       req.query.email ||
@@ -37,14 +42,12 @@ module.exports = {
     .catch(res.queryError);
   },
 
-  create: function create(req, res) {
-    var we = req.we;
+  create(req, res) {
+    const we = req.we;
 
     if (!res.locals.template) res.locals.template = res.locals.model + '/' + 'create';
 
     if (!res.locals.data) res.locals.data = {};
-
-    we.utils._.merge(res.locals.data, req.query);
 
     if (req.method === 'POST') {
       // auto accept terms in register user
@@ -54,19 +57,22 @@ module.exports = {
       res.locals.data = req.query;
       we.utils._.merge(res.locals.data, req.body);
 
-      return res.locals.Model.create(req.body)
-      .then(function (record) {
+      return res.locals.Model
+      .create(req.body)
+      .then( (record)=> {
         res.locals.data = record;
         res.created();
-      }).catch(res.queryError);
+        return record;
+      })
+      .catch(res.queryError);
     } else {
       res.locals.data = req.query;
       res.ok();
     }
   },
 
-  edit: function edit(req, res, next) {
-    var we = req.we;
+  edit(req, res, next) {
+    const we = req.we;
 
     if (!res.locals.template)
       res.locals.template = res.locals.model + '/' + 'edit';
@@ -77,22 +83,25 @@ module.exports = {
       delete req.body.roles;
     }
 
-    var record = res.locals.data;
+    let record = res.locals.data;
 
     if (we.config.updateMethods.indexOf(req.method) >-1) {
       if (!record) return next();
 
-      record.updateAttributes(req.body)
-      .then(function() {
+      record
+      .updateAttributes(req.body)
+      .then( ()=> {
         res.locals.data = record;
-        return res.updated();
-      }).catch(res.queryError);
+        res.updated();
+        return null;
+      })
+      .catch(res.queryError);
     } else {
       res.ok();
     }
   },
 
-  findUserPrivacity: function findUserPrivacity(req, res, next) {
+  findUserPrivacity(req, res, next) {
     if (!res.locals.user) return res.notFound();
 
     if (
@@ -123,18 +132,20 @@ module.exports = {
         '<li class="active">'+res.locals.__('Privacity')+'</li>'+
       '</ol>';
 
-    req.we.db.models.userPrivacity.findAll({
+    req.we.db.models.userPrivacity
+    .findAll({
       where: {
         userId: res.locals.user.id
       }
-    }).then(function (r) {
+    })
+    .then( (r)=> {
       res.locals.data = {};
 
       if (r) {
-        for (var i = 0; i < res.locals.userAttributes.length; i++) {
+        for (let i = 0; i < res.locals.userAttributes.length; i++) {
           res.locals.data[res.locals.userAttributes[i]] = {};
 
-          for (var j = 0; j < r.length; j++) {
+          for (let j = 0; j < r.length; j++) {
             if (r[j].field == res.locals.userAttributes[i]) {
               res.locals.data[res.locals.userAttributes[i]].record = r[j];
             }
@@ -147,10 +158,12 @@ module.exports = {
       } else {
         res.ok();
       }
-    }).catch(res.queryError);
+      return null;
+    })
+    .catch(res.queryError);
   },
 
-  updateUserPrivacity: function updateUserPrivacity(req, res) {
+  updateUserPrivacity(req, res) {
     if (!res.locals.redirectTo) res.locals.redirectTo = req.url;
 
     // for each field ...
@@ -187,7 +200,7 @@ module.exports = {
           next();
         }).catch(next);
       }
-    }, function (err) {
+    },  (err)=> {
       if (err) return res.queryError(err);
       res.updated();
     });
