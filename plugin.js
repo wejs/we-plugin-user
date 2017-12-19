@@ -18,6 +18,9 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
         ]
       }
     },
+    user: {
+      disableContext: false
+    }
   });
 
   plugin.setRoutes({
@@ -69,6 +72,7 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
   });
 
   plugin.events.on('we:express:set:params', function(data) {
+    const we = plugin.we;
     // user pre-loader
     data.express.param('userId', function (req, res, next, id) {
       if (!/^\d+$/.exec(String(id))) return res.notFound();
@@ -77,7 +81,7 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
         if (user) {
           res.locals.user = user;
           // set user context if userId is the first param
-          if (Object.keys(req.params)[0] == 'userId'){
+          if (we.config.user.disableContext && Object.keys(req.params)[0] == 'userId'){
             res.locals.widgetContext = 'user-' + id;
           }
         }
