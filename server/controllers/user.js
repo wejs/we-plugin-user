@@ -22,6 +22,21 @@ module.exports = {
     .catch(res.queryError);
   },
 
+  goTo(req, res, next) {
+    if (req.query.action && req.we.config.user.goToOptions) {
+      if (req.we.config.user.goToOptions[req.query.action]) {
+        req.we.config.user.goToOptions[req.query.action](req,res,next);
+        return null;
+      }
+    }
+
+    if (req.isAuthenticated()) {
+      res.goTo('/user/'+req.user.id);
+    } else {
+      res.goTo('/user');
+    }
+  },
+
   find(req, res) {
     // block email filter
     if (

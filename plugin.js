@@ -19,11 +19,30 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
       }
     },
     user: {
-      disableContext: false
+      disableContext: false,
+      goToOptions: {
+        view(req, res, next) {
+          if (!req.isAuthenticated()) return next();
+          res.goTo('/user/'+req.user.id);
+        },
+        edit(req, res, next) {
+          if (!req.isAuthenticated()) return next();
+          res.goTo('/user/'+req.user.id+'/edit');
+        },
+        privacity(req, res, next) {
+          if (!req.isAuthenticated()) return next();
+          res.goTo('/user/'+req.user.id+'/edit/privacity');
+        }
+      }
     }
   });
 
   plugin.setRoutes({
+    'get /user-goto': {
+      'controller'    : 'user',
+      'action'        : 'goTo'
+    },
+
     'get /user/:userId([0-9]+)/edit/privacity': {
       'name'          : 'user.privacity',
       'controller'    : 'user',
