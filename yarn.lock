@@ -1075,9 +1075,9 @@ mkdirp@0.5.1, mkdirp@0.5.x:
   dependencies:
     minimist "0.0.8"
 
-mocha@^4.0.1:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/mocha/-/mocha-4.1.0.tgz#7d86cfbcf35cb829e2754c32e17355ec05338794"
+mocha@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-5.0.1.tgz#759b62c836b0732382a62b6b1fb245ec1bc943ac"
   dependencies:
     browser-stdout "1.3.0"
     commander "2.11.0"
@@ -1839,9 +1839,9 @@ we-plugin-acl@wejs/we-plugin-acl:
   dependencies:
     we-core-acl "^1.2.3"
 
-we-plugin-auth@wejs/we-plugin-auth:
-  version "1.3.1"
-  resolved "https://codeload.github.com/wejs/we-plugin-auth/tar.gz/b4bc975ff8671462cad331090b6fc5b0c10878f2"
+we-plugin-auth@^2:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/we-plugin-auth/-/we-plugin-auth-2.0.0.tgz#73f6d1b06df72f7ce31a4f0d7dc51b206730ed1f"
   dependencies:
     bcryptjs "2.4.3"
     passport "0.4.0"
