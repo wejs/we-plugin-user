@@ -16,7 +16,10 @@ module.exports = {
       }
     })
     .then( (user)=> {
-      if(!user) return next();
+      if(!user) {
+        next();
+        return null;
+      }
       return res.ok(user);
     })
     .catch(res.queryError);
@@ -107,8 +110,7 @@ module.exports = {
       .updateAttributes(req.body)
       .then( ()=> {
         res.locals.data = record;
-        res.updated();
-        return null;
+        return res.updated();
       })
       .catch(res.queryError);
     } else {

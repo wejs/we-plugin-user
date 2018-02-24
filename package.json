@@ -13,10 +13,12 @@
     "istanbul": "^0.4.5",
     "mocha": "^4.0.1",
     "mysql": "^2.15.0",
+    "mysql2": "^1.5.2",
     "rimraf": "^2.6.2",
     "supertest": "^3.0.0",
-    "we-core": "wejs/we-core",
-    "we-plugin-form": "wejs/we-plugin-form",
+    "we-core": "^2",
+    "we-plugin-auth": "wejs/we-plugin-auth",
+    "we-plugin-acl": "wejs/we-plugin-acl",
     "we-test-tools": "wejs/we-test-tools"
   },
   "keywords": [
@@ -35,5 +37,12 @@
   ],
   "repository": "wejs/we-plugin-user",
   "author": "Alberto Souza <contato@albertosouza.net>",
-  "license": "MIT"
+  "license": "MIT",
+  "wejs": {
+    "plugins": {
+      "we-plugin-auth": true,
+      "we-plugin-acl": true
+    },
+    "devPlugins": {}
+  }
 }

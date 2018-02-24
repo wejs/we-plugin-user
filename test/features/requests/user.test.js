@@ -1,27 +1,42 @@
-var assert = require('assert');
-var request = require('supertest');
-var helpers = require('we-test-tools').helpers;
-var stubs = require('we-test-tools').stubs;
-var _, we, http;
+const assert = require('assert'),
+  request = require('supertest'),
+  helpers = require('we-test-tools').helpers,
+  stubs = require('we-test-tools').stubs;
+
+let _, we, http;
+let authenticatedRequest, salvedUserPassword, salvedUser;
 
 describe('userFeature', function () {
-  var salvedUser;
-
   before(function (done) {
     http = helpers.getHttp();
     we = helpers.getWe();
     _ = we.utils._;
 
-    // after all create one user
-    request(http)
-    .post('/user')
-    .set('Accept', 'application/json')
-    .expect(201)
-    .send( stubs.userStub() )
-    .end(function (err, res) {
-      if (err) return done(err);
-      salvedUser = res.body.user[0];
-      done();
+    let userStub = stubs.userStub();
+    helpers.createUser(userStub, (err, user)=> {
+      if (err) throw err;
+
+      salvedUser = user;
+      salvedUserPassword = userStub.password;
+
+      // login user and save the browser
+      authenticatedRequest = request.agent(http);
+      authenticatedRequest.post('/login')
+      .set('Accept', 'application/json')
+      .send({
+        email: salvedUser.email,
+        password: salvedUserPassword
+      })
+      .expect(200)
+      .set('Accept', 'application/json')
+      .end( (err)=> {
+        if (err) {
+          we.log.error('error on login>', err);
+          return done(err);
+        }
+
+        done();
+      });
     });
   });
 
@@ -68,5 +83,119 @@ describe('userFeature', function () {
     });
 
   });
+
+  describe('goTo', function () {
+    it('get /user-goto route should redirect user to /user/:authenticatedUserId route', function (done) {
+      authenticatedRequest.get('/user-goto')
+      // .set('Accept', 'application/json')
+      .end(function (err, res) {
+        if (err) {
+          console.log('res.body>', res.body);
+          return done(err);
+        }
+
+        assert.equal(302, res.status, 'Should return redirect status 302');
+        assert.equal(
+          res.headers.location,
+          '/user/'+salvedUser.id,
+          'Should redirect to /user/'+salvedUser.id
+        );
+        done();
+      });
+    });
+
+    it('get /user-goto?action=view route should redirect user to /user/:authenticatedUserId route', function (done) {
+      authenticatedRequest.get('/user-goto?action=view')
+      .end(function (err, res) {
+        if (err) {
+          console.log('res.body>', res.body);
+          return done(err);
+        }
+
+        assert.equal(302, res.status, 'Should return redirect status 302');
+        assert.equal(
+          res.headers.location,
+          '/user/'+salvedUser.id,
+          'Should redirect to /user/'+salvedUser.id
+        );
+        done();
+      });
+    });
+
+    it('get /user-goto?action=edit route should redirect user to /user/:id/edit route', function (done) {
+      authenticatedRequest.get('/user-goto?action=edit')
+      .end(function (err, res) {
+        if (err) {
+          console.log('res.body>', res.body);
+          return done(err);
+        }
+
+        assert.equal(302, res.status, 'Should return redirect status 302');
+        assert.equal(
+          res.headers.location,
+          '/user/'+salvedUser.id+'/edit',
+          'Should redirect to /user/'+salvedUser.id+'/edit'
+        );
+        done();
+      });
+    });
+
+    it('get /user-goto?action=privacity route should redirect user to /user/:id/privacity route', function (done) {
+      authenticatedRequest.get('/user-goto?action=privacity')
+      .end(function (err, res) {
+        if (err) {
+          console.log('res.body>', res.body);
+          return done(err);
+        }
+
+        assert.equal(302, res.status, 'Should return redirect status 302');
+        assert.equal(
+          res.headers.location,
+          '/user/'+salvedUser.id+'/edit/privacity',
+          'Should redirect to /user/'+salvedUser.id+'/edit/privacity'
+        );
+        done();
+      });
+    });
+
+    it('get /user-goto route should redirect unAuthenticated user to /user route', function (done) {
+      request(http)
+      .get('/user-goto')
+      .end(function (err, res) {
+        if (err) {
+          console.log('res.body>', res.body);
+          return done(err);
+        }
+
+        assert.equal(302, res.status, 'Should return redirect status 302');
+        assert.equal(
+          res.headers.location,
+          '/user',
+          'Should redirect to /user'
+        );
+        done();
+      });
+    });
+
+    it('get /user-goto?action=anything route with invalid action should redirect to /user route', function (done) {
+      request(http)
+      .get('/user-goto?action=anything')
+      .end(function (err, res) {
+        if (err) {
+          console.log('res.body>', res.body);
+          return done(err);
+        }
+
+        assert.equal(302, res.status, 'Should return redirect status 302');
+        assert.equal(
+          res.headers.location,
+          '/user',
+          'Should redirect to /user'
+        );
+        done();
+      });
+    });
+  });
+
 
 });

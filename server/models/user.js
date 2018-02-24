@@ -228,7 +228,7 @@ module.exports = function UserModel(we) {
           we.db.models.userPrivacity
           .findAll({
             where: { userId: record.id },
-            raw: true
+            raw: true,
           })
           .then( (p)=> {
             record.privacity = p;

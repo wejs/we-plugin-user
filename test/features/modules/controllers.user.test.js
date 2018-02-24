@@ -19,7 +19,7 @@ describe('controllers.user', function () {
   describe('controllers.user.findOneByUsername', function () {
     it('findOneByUsername action should run next if username is not set', function (done) {
       var req = { we: we, params: {}};
-      var res = { locals: {} };
+      var res = { queryError:()=>{}, locals: {} };
       controller.findOneByUsername(req, res, function(){
         // called
         done();
@@ -27,8 +27,8 @@ describe('controllers.user', function () {
     });
 
     it('findOneByUsername action should run next if not find the user', function (done) {
-      var req = { we: we, params: { username: 'unknowname' }};
-      var res = { locals: { Model: we.db.models.user } };
+      let req = { we: we, params: { username: 'unknowname' }};
+      let res = { queryError:()=>{}, locals: { Model: we.db.models.user } };
       controller.findOneByUsername(req, res, function(){
         // called
         done();
@@ -36,11 +36,12 @@ describe('controllers.user', function () {
     });
 
     it('findOneByUsername action should run next with found user', function (done) {
-      var req = { we: we, params: { username: user.username }};
-      var res = {
+      let req = { we: we, params: { username: user.username }};
+      let res = {
+        queryError:()=>{},
         locals: { Model: we.db.models.user },
         ok: function(u){
-          assert.equal(u.id, user.id)
+          assert.equal(u.id, user.id);
           assert.equal(u.username, user.username);
           // called
           done();
@@ -59,7 +60,7 @@ describe('controllers.user', function () {
         },
         params: {}
       };
-      var res = { locals: {}, ok: function() {
+      var res = { queryError:()=>{}, locals: {}, ok: function() {
         assert.equal(res.locals.data.something, 'something');
         done();
       }};
@@ -74,7 +75,7 @@ describe('controllers.user', function () {
         params: {},
         body: {}
       };
-      var res = { locals: {}, ok: function() {
+      var res = { queryError:()=>{}, locals: {}, ok: function() {
         done();
       }};
       controller.edit(req, res);
@@ -85,7 +86,7 @@ describe('controllers.user', function () {
         body: { displayName: 'A Hero!' },
         params: {}
       };
-      var res = { locals: {} };
+      var res = { queryError:()=>{}, locals: {} };
       controller.edit(req, res, function(){
         // called
         done();
@@ -97,7 +98,7 @@ describe('controllers.user', function () {
         body: { displayName: 'A Hero!' },
         params: {}
       };
-      var res = { locals: { data: user },
+      var res = { queryError:()=>{}, locals: { data: user },
         updated: function(){
           assert.equal(res.locals.data.displayName, 'A Hero!');
           // called

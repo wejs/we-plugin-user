@@ -95,7 +95,8 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
     // user pre-loader
     data.express.param('userId', function (req, res, next, id) {
       if (!/^\d+$/.exec(String(id))) return res.notFound();
-      data.we.db.models.user.findById(id)
+      data.we.db.models.user
+      .findById(id)
       .then( (user)=> {
         if (user) {
           res.locals.user = user;
