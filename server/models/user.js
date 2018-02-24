@@ -253,16 +253,15 @@ module.exports = function UserModel(we) {
         }
       },
       hooks: {
-        beforeValidate(user, options, next) {
+        beforeValidate(user) {
           if (user.isNewRecord) {
             // dont set password on create
             user.dataValues.password = null;
             user.dataValues.passwordId = null;
           }
-          next(null, user);
         },
         // Lifecycle Callbacks
-        beforeCreate(user, options, next) {
+        beforeCreate(user) {
           // set default displayName as username
           if (!user.displayName) {
             if (user.fullName && user.fullName.trim()) {
@@ -277,9 +276,8 @@ module.exports = function UserModel(we) {
           // dont allow to set admin and moderator flags
           delete user.isAdmin;
           delete user.isModerator;
-          next(null, user);
         },
-        beforeUpdate(user, options, next) {
+        beforeUpdate(user) {
           // set default displayName as username
           if (!user.displayName) {
             if (user.fullName && user.fullName.trim()) {
@@ -291,20 +289,27 @@ module.exports = function UserModel(we) {
 
           // dont change user acceptTerms in update
           user.acceptTerms = true;
-          return next(null, user);
         },
+        afterFind(record) {
+          return new Promise( (resolve, reject)=> {
+            if (!record) return resolve();
 
-        afterFind(record, options, next) {
-          if (!record) return next();
+            // load privacity to hide user fields in toJSON
+            if (we.utils._.isArray(record)) {
+              we.utils.async.eachSeries(record, (r, next)=> {
+                we.db.models.user.loadPrivacity(r, next);
+              }, (err)=> {
+                if (err) return reject(err);
+                resolve();
+              });
+            } else {
+              we.db.models.user.loadPrivacity(record, (err)=> {
+                if (err) return reject(err);
+                resolve();
+              });
+            }
+          });
 
-          // load privacity to hide user fields in toJSON
-          if (we.utils._.isArray(record)) {
-            we.utils.async.eachSeries(record, (r, next)=> {
-              we.db.models.user.loadPrivacity(r, next);
-            }, next);
-          } else {
-            we.db.models.user.loadPrivacity(record, next);
-          }
         }
       }
     }
