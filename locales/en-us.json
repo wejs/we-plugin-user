@@ -73,5 +73,7 @@
   "widget.user-logo-and-displayname.label": "User logo and displayName",
   "user.privacity.fieldName": "Data",
   "Privacity": "Privacity",
-  "Profile": "Profile"
+  "Profile": "Profile",
+  "Block": "Block",
+  "Un Block": "Un Block"
 }

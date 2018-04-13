@@ -53,5 +53,7 @@
   "users.link": "Usuários",
   "user.find": "Usuários",
   "Privacity": "Privacidade",
-  "user.privacity.fieldName": "Dados"
+  "user.privacity.fieldName": "Dados",
+  "Block": "Bloquear",
+  "Un Block": "Desbloquear"
 }

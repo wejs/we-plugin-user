@@ -68,6 +68,8 @@ module.exports = {
     if (!res.locals.data) res.locals.data = {};
 
     if (req.method === 'POST') {
+      delete req.body.blocked;
+
       // auto accept terms in register user
       req.body.acceptTerms = true;
 
@@ -91,6 +93,8 @@ module.exports = {
 
   edit(req, res, next) {
     const we = req.we;
+
+    delete req.body.blocked;
 
     if (!res.locals.template)
       res.locals.template = res.locals.model + '/' + 'edit';
@@ -183,6 +187,8 @@ module.exports = {
   updateUserPrivacity(req, res) {
     if (!res.locals.redirectTo) res.locals.redirectTo = req.url;
 
+    delete req.body.blocked;
+
     // for each field ...
     req.we.utils.async.eachSeries(res.locals.userAttributes,
     function (fieldName, next) {
@@ -221,5 +227,31 @@ module.exports = {
       if (err) return res.queryError(err);
       res.updated();
     });
+  },
+
+  blockUser(req, res) {
+    const Model = req.we.db.models.user;
+
+    Model.findById(req.params.id)
+    .then( (user)=> {
+      if (!user) {
+        return res.notFound();
+      }
+
+      if (req.body.blocked === undefined) {
+        req.body.blocked = true;
+      }
+
+      if (user.blocked === req.body.blocked) {
+        return user;
+      } else {
+        user.blocked = req.body.blocked;
+        return user.save();
+      }
+    })
+    .then( ()=> {
+      return res.ok({ blocked: req.body.blocked });
+    })
+    .catch(res.queryError);
   }
 };

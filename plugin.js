@@ -43,6 +43,12 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
       'action'        : 'goTo'
     },
 
+    'post /block-user/:id': {
+      'controller'    : 'user',
+      'action'        : 'blockUser',
+      'permission'    : 'blockUser'
+    },
+
     'get /user/:userId([0-9]+)/edit/privacity': {
       'name'          : 'user.privacity',
       'controller'    : 'user',

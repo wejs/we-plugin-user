@@ -95,6 +95,12 @@ module.exports = function UserModel(we) {
         formFieldType: null
       },
 
+      blocked: {
+        type: we.db.Sequelize.BOOLEAN,
+        defaultValue: false,
+        formFieldType: null
+      },
+
       language: {
         type: we.db.Sequelize.STRING,
         defaultValue: 'pt-br',
