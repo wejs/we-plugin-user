@@ -4,6 +4,7 @@ node_modules
 coverage
 config
 *.log
-
-package-lock.json
+*.sqlite
+*.sql
+.nyc_output
 yarn.lock

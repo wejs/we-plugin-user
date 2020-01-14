@@ -5,7 +5,7 @@ const projectPath = process.cwd(),
 let we;
 
 before(function(cb){
-  testTools.copyLocalConfigIfNotExitst(projectPath, cb);
+  testTools.copyLocalSQLiteConfigIfNotExists(projectPath, cb);
 });
 
 before(function(callback) {

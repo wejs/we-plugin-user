@@ -6,5 +6,8 @@ files/uploads
 .travis.yml
 .gitignore
 *.log
+*.sqlite
+*.sql
+.nyc_output
 config
 coverage
