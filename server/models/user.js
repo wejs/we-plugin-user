@@ -223,10 +223,11 @@ module.exports = function UserModel(we) {
 
         // returns an url alias
         urlAlias(record) {
-          const part1 = we.utils.stripTagsAndTruncate(we.i18n.__('user'), 20, '');
-          const part2 = we.utils.stripTagsAndTruncate (
-            record.username || record.displayName, 200, ''
+          const part1 = we.utils.slugifyAndTruncate(we.i18n.__('user'), 20, '');
+          const part2 = we.utils.slugifyAndTruncate (
+            record.username || record.displayName, 50, ''
           );
+
           return {
             alias: '/'+ part1 +'/' + record.id + '-'+ part2,
             target: '/user/' + record.id,
