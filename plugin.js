@@ -33,6 +33,17 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
           if (!req.isAuthenticated()) return next();
           res.goTo('/user/'+req.user.id+'/edit/privacity');
         }
+      },
+
+      /**
+       * getPreloadQueryOptions
+       *
+       * @param  {Object} req
+       * @param  {Object} res
+       * @return {Object}
+       */
+      getPreloadQueryOptions() {
+        return {};
       }
     }
   });
@@ -102,7 +113,7 @@ module.exports = function loadUserPlugin(projectPath, Plugin) {
     data.express.param('userId', function (req, res, next, id) {
       if (!/^\d+$/.exec(String(id))) return res.notFound();
       data.we.db.models.user
-      .findById(id)
+      .findById(id, we.config.user.getPreloadQueryOptions())
       .then( (user)=> {
         if (user) {
           res.locals.user = user;
